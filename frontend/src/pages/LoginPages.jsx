@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
+// import { Redirect } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import cn from 'classnames';
 import Login from '../images/login.jpeg';
-
+import routes from '../routes';
+import AuthContext from '../context/AuthContext';
 
 const schema = yup.object().shape({
   username: yup.string()
@@ -10,13 +15,16 @@ const schema = yup.object().shape({
     .max(20, 'Name is long')
     .required('Required'),
   password: yup.string()
-    .min(6, 'Password is to short')
+    .min(5, 'Password is to short')
     .required('Required'),
 });
 
 const Logopages = () => {
+  const navigate = useNavigate();
+  const { setToken } = useContext(AuthContext);
+
   const {
-    values, errors, touched, handleBlur, handleChange, handleSubmit,
+    values, errors, touched, handleBlur, handleChange, handleSubmit, setSubmitting,
   } = useFormik({
     initialValues: {
       username: '',
@@ -24,13 +32,31 @@ const Logopages = () => {
     },
     validationSchema: schema,
     validateOnChange: false,
-    // eslint-disable-next-line no-shadow
-    onSubmit: (values) => {
-      // eslint-disable-next-line no-alert
-      alert(JSON.stringify(values, null, 2));
+    errorToken: false,
+    onSubmit: async () => {
+      await axios.post(routes.login(), { username: values.username, password: values.password })
+        .then((response) => {
+          // console.log('POST Data', response.data);
+          localStorage.clear();
+          localStorage.setItem('token', response.data.token);
+          navigate('/');
+          setToken(response.data);
+          // console.log('!!!!!!!!!!!!!!!!!!!!', token);
+        })
+        .catch((err) => {
+          // console.log('ERRRROR', err);
+          // eslint-disable-next-line functional/no-conditional-statements
+          if (err.response.status === 401) {
+            errors.password = 'Неверные имя пользователя или пароль';
+          }
+        });
     },
   });
-  // console.log(errors)
+
+  const errClass = cn('form-control', {
+    'form-control is-invalid': errors.password || errors.username,
+  });
+
   return (
 
     <div className="container-fluid h-100">
@@ -51,12 +77,13 @@ const Logopages = () => {
                   <input
                     name="username"
                     autoComplete="username"
+                    onBlur={handleBlur}
                     required=""
                     placeholder="Ваш ник"
                     id="username"
                     onChange={handleChange}
                     value={values.username}
-                    className={errors.username ? 'form-control is-invalid' : 'form-control'}
+                    className={errClass}
                   />
                   <label
                     htmlFor="username"
@@ -68,15 +95,16 @@ const Logopages = () => {
                   <input
                     name="password"
                     autoComplete="current-password"
+                    onBlur={handleBlur}
                     required=""
                     placeholder="Пароль"
                     type="password"
                     id="password"
                     onChange={handleChange}
                     value={values.password}
-                    className={errors.password ? 'form-control is-invalid' : 'form-control'}
+                    className={errClass}
                   />
-                  <div className="invalid-tooltip">Неверные имя пользователя или пароль</div>
+                  <div className="invalid-tooltip">{errors.password}</div>
                   <label
                     className="form-label"
                     htmlFor="password"

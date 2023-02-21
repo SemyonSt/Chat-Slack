@@ -30,7 +30,7 @@ const Registratepages = () => {
       alert(JSON.stringify(values, null, 2));
     },
   });
-  console.log(errors);
+  console.log('TOUCHEDD', touched.username);
   return (
         <div className="container-fluid h-100">
             <div className="row justify-content-center align-content-center h-100">
@@ -112,7 +112,7 @@ const Registratepages = () => {
                                 <button
                                   type="submit"
                                   className="w-100 btn btn-outline-primary"
-                                // disabled={formik.isSubmitting}
+                                disabled={formik.isSubmitting}
                                 >
                                     Зарегистрироваться
                                 </button>
