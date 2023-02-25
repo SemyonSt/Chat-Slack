@@ -1,11 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
 import React, { useState } from 'react';
+import { Provider } from 'react-redux';
 import ErrorPages from './pages/ErrorPages';
 import LoginPages from './pages/LoginPages';
 import RegisrtatPages from './pages/RegisrtatPages';
 import ChatPages from './pages/ChatPages';
 
 import AuthContext from './context/AuthContext';
+import store from './slices/index';
 
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState('');
@@ -23,14 +25,16 @@ const App = () => (
         <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
           <div className="container"><a className="navbar-brand" href="/">Hexlet Chat</a></div>
         </nav>
-        <AuthProvider>
-          <Routes>
-            <Route path="/" element={<ChatPages />} />
-            <Route path="/login" element={<LoginPages />} />
-            <Route path="/signup" element={<RegisrtatPages />} />
-            <Route path="*" element={<ErrorPages />} />
-          </Routes>
-        </AuthProvider>
+        <Provider store={store}>
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<ChatPages />} />
+              <Route path="/login" element={<LoginPages />} />
+              <Route path="/signup" element={<RegisrtatPages />} />
+              <Route path="*" element={<ErrorPages />} />
+            </Routes>
+          </AuthProvider>
+        </Provider>
       </div>
       <div className="Toastify" />
     </div>

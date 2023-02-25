@@ -24,7 +24,7 @@ const Logopages = () => {
   const { setToken } = useContext(AuthContext);
 
   const {
-    values, errors, touched, handleBlur, handleChange, handleSubmit, setSubmitting,
+    values, errors, handleBlur, handleChange, handleSubmit,
   } = useFormik({
     initialValues: {
       username: '',
