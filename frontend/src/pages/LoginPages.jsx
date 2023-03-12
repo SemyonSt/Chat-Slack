@@ -37,11 +37,12 @@ const Logopages = () => {
       await axios.post(routes.login(), { username: values.username, password: values.password })
         .then((response) => {
           // console.log('POST Data', response.data);
+          const data = JSON.stringify(response.data);
           localStorage.clear();
-          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('userInfo', data);
           navigate('/');
           setToken(response.data);
-          // console.log('!!!!!!!!!!!!!!!!!!!!', token);
+          console.log('!!!!!!!!!!!!!!!!!!!!', data);
         })
         .catch((err) => {
           // console.log('ERRRROR', err);

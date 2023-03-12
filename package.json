@@ -21,6 +21,9 @@
   "homepage": "https://github.com/SemyonSt/frontend-project-12#readme",
   "dependencies": {
     "@hexlet/chat-server": "^1.1.6",
-    "formik": "^2.2.9"
+    "express": "^4.18.2",
+    "formik": "^2.2.9",
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1"
   }
 }
