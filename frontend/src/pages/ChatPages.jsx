@@ -8,19 +8,23 @@ import routes from '../routes';
 import { actions as channelsActions } from '../slices/chanalSlice';
 
 const socket = io();
-
+// subscribe new messages
+socket.on('newMessage', (payload) => {
+  console.log('LLALALALA', payload);
+});
 const Input = () => {
-  const channelsId = useSelector((state) => state.channelReduser.channelId);
-
-  // subscribe new messages
-  socket.on('newMessage', (payload) => {
-    console.log('LLALALALA', payload);
-  });
+  // const channelsId = useSelector((state) => state.channelReduser.channelId);
 
   const message = () => {
     // emit new message
-    socket.emit('newMessage', { body: value, channelId: channelsId, username: JSON.parse(localStorage.getItem('userInfo')).username });
-    console.log(value)
+    // emit new message
+    socket.emit('newMessage', { body: 'message text', channelId: 1, username: 'admin' });
+    // socket.emit('newMessage', {
+    //   body: value,
+    //   channelId: channelsId,
+    //   username: JSON.parse(localStorage.getItem('userInfo')).username,
+    // });
+    // console.log(value);
   };
 
   const [value, setValue] = useState('');
@@ -68,7 +72,7 @@ const ChatPages = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(routes.getData(), { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo')).token}`} });
+      const response = await axios.get(routes.getData(), { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo')).token}` } });
       dispatch(channelsActions.setChannels(response.data.channels));
       // subscribe new messages
     };
