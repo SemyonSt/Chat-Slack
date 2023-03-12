@@ -33,8 +33,8 @@ const Logopages = () => {
     validationSchema: schema,
     validateOnChange: false,
     errorToken: false,
-    onSubmit: async () => {
-      await axios.post(routes.login(), { username: values.username, password: values.password })
+    onSubmit: () => {
+      axios.post(routes.login(), { username: values.username, password: values.password })
         .then((response) => {
           // console.log('POST Data', response.data);
           const data = JSON.stringify(response.data);
