@@ -10,6 +10,7 @@ import ChatMessage from './Chat/ChatMessage';
 import Chennal from './Chat/Chennal';
 
 import { actions as channelsActions } from '../slices/chanalSlice';
+import { actions as messageActions } from '../slices/messageSlice';
 
 const ChatPages = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const ChatPages = () => {
     const fetchData = async () => {
       const response = await axios.get(routes.getData(), { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo')).token}` } });
       dispatch(channelsActions.setChannels(response.data.channels));
+      dispatch(messageActions.setMessages(response.data.messages));
     };
     fetchData();
   }, [dispatch]);

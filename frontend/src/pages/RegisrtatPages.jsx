@@ -18,7 +18,7 @@ const schema = yup.object().shape({
 
 const Registratepages = () => {
   const {
-    values, errors, touched, handleBlur, handleChange, handleSubmit,
+    values, errors, touched, handleChange, handleSubmit,
   } = useFormik({
     initialValues: {
       username: '',
@@ -26,6 +26,7 @@ const Registratepages = () => {
       confirmPassword: '',
     },
     validationSchema: schema,
+    // eslint-disable-next-line no-shadow
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
@@ -112,7 +113,6 @@ const Registratepages = () => {
                                 <button
                                   type="submit"
                                   className="w-100 btn btn-outline-primary"
-                                disabled={formik.isSubmitting}
                                 >
                                     Зарегистрироваться
                                 </button>

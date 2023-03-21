@@ -24,6 +24,7 @@ const App = () => (
       <div className="d-flex flex-column h-100">
         <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
           <div className="container"><a className="navbar-brand" href="/">Hexlet Chat</a></div>
+          <button type="button" className="btn btn-primary">Выйти</button>
         </nav>
         <Provider store={store}>
           <AuthProvider>

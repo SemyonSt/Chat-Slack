@@ -8,7 +8,6 @@ import slice from '../../slices/index';
 
 const socket = io();
 socket.on('newMessage', (payload) => {
-  // console.log(payload);
   slice.dispatch(messageActions.addMessage(payload));
 });
 
@@ -18,6 +17,7 @@ const ChatMessage = () => {
   const channelsId = useSelector((state) => state.channelReduser.channelId);
   const messages = useSelector((state) => state.messageReducer.message);
 
+  // отправка сообщений на сервер
   const sendMessage = (e) => {
     e.preventDefault();
     socket.emit('newMessage', {
@@ -28,19 +28,24 @@ const ChatMessage = () => {
     setMessage('');
   };
 
-  // какая то фигня
-  const activChannelName = (channels1) => {
+  // какая то фигня (отображение ID активного канала)
+  const ActivChannelName = (channels1) => {
     const filter = channels1.filter((channel) => channel.id === channelsId).map((i) => i.name);
     return filter[0];
   };
 
-  const outputMessage = messages.map((mes) => {
+  // фильтрация сообщений по каналам
+  const chennaMessage = messages.filter((mes) => mes.channelId === channelsId);
+
+  // отображение сообщений в общем поле
+  const outputMessage = chennaMessage.map((mes) => {
     const { body, username, id } = mes;
     return (
       <div className="text-break mb-2" key={id}><b>{username}</b>: {body}</div>
     );
   });
 
+  // окончание "сообщения(ий/ие)"
   const numberOfMessages = (number) => {
     number %= 100;
     if (number >= 5 && number <= 20) {
@@ -61,12 +66,12 @@ const ChatMessage = () => {
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b># {activChannelName(channels)} </b>
+            <b># {ActivChannelName(channels)} </b>
           </p>
           <span
             className="text-muted"
           >
-            {messages.length} {numberOfMessages((messages.length))}
+            {chennaMessage.length} {numberOfMessages((chennaMessage.length))}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5 ">
