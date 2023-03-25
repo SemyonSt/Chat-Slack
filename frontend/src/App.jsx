@@ -35,7 +35,7 @@ const App = () => {
         <div className="d-flex flex-column h-100">
           <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
             <div className="container"><a className="navbar-brand" href="/">Hexlet Chat</a></div>
-            <button style={{ marginRight: '250px' }} onClick={() => logOut()} type="button" className="btn btn-primary">Выйти</button>
+            {localStorage.getItem('userInfo') ? <button style={{ marginRight: '250px' }} onClick={() => logOut()} type="button" className="btn btn-primary">Выйти</button> : null}
           </nav>
           <Provider store={store}>
             <AuthProvider>
