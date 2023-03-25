@@ -24,7 +24,7 @@ const Logopages = () => {
   const { setToken } = useContext(AuthContext);
 
   const {
-    values, errors, handleBlur, touched, handleChange, handleSubmit,
+    values, errors, handleBlur, touched, setSubmitting, handleChange, handleSubmit,
   } = useFormik({
     initialValues: {
       username: '',
@@ -45,11 +45,11 @@ const Logopages = () => {
           console.log('!!!!!!!!!!!!!!!!!!!!', data);
         })
         .catch((err) => {
-          // console.log('ERRRROR', err);
-          // eslint-disable-next-line functional/no-conditional-statements
           if (err.response.status === 401) {
             errors.password = 'Неверные имя пользователя или пароль';
+            return setSubmitting(false);
           }
+          return setSubmitting(false);
         });
     },
   });
