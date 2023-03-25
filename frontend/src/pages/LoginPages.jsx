@@ -24,7 +24,7 @@ const Logopages = () => {
   const { setToken } = useContext(AuthContext);
 
   const {
-    values, errors, handleBlur, handleChange, handleSubmit,
+    values, errors, handleBlur, touched, handleChange, handleSubmit,
   } = useFormik({
     initialValues: {
       username: '',
@@ -55,7 +55,7 @@ const Logopages = () => {
   });
 
   const errClass = cn('form-control', {
-    'form-control is-invalid': errors.password || errors.username,
+    'form-control is-invalid': (errors.password && touched.password) || (errors.username && touched.username),
   });
 
   return (
