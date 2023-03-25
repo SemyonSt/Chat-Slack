@@ -12,11 +12,11 @@ import slice from '../../slices/index';
 
 import AddChannelModal from '../Modal/AddChannel';
 import DeleteChannelModal from '../Modal/DeleteChannelModal';
+import RenameChannelModal from '../Modal/RenameChannelModal';
 
 
 const socket = io();
 socket.on('newChannel', (payload) => {
-  console.log(payload); // { id: 6, name: "new channel", removable: true }
   slice.dispatch(channelsActions.addChannel(payload));
   slice.dispatch(channelsActions.setChannelId(payload.id));
 });
@@ -26,17 +26,22 @@ socket.on('removeChannel', (payload) => {
   slice.dispatch(channelsActions.setChannelId(1));
 });
 
+socket.on('renameChannel', (payload) => {
+  slice.dispatch(channelsActions.renameChannel(payload));
+});
+
 
 const Chennal = () => {
   const dispatch = useDispatch();
   const channels = useSelector((state) => state.channelReduser.channels);
-  const channelId = useSelector((state) => state.channelReduser.channelId);
-  console.log(channels);
+  const activeChannelId = useSelector((state) => state.channelReduser.channelId);
+  // console.log(channels);
 
   const [addModalActive, setAddModalActive] = useState(false);
   const [deleteModalActive1, setDeleteModalActive1] = useState(false);
+  const [renameModalActive, setRenameModalActive] = useState(false);
 
-  const [deleteId, setDeleteId] = useState(null);
+  const [channelId, setChannelId] = useState(null);
 
   const getChannelId = (id) => {
     dispatch(channelsActions.setChannelId(id));
@@ -49,7 +54,7 @@ const Chennal = () => {
       <li className="nav-item w-100" key={id}>
         <button
           type="button"
-          className={id === channelId ? 'w-100 rounded-0 text-start btn btn-secondary' : 'w-100 rounded-0 text-start btn'}
+          className={id === activeChannelId ? 'w-100 rounded-0 text-start btn btn-secondary' : 'w-100 rounded-0 text-start btn'}
           onClick={() => getChannelId(id)}
         >
           <span
@@ -59,34 +64,41 @@ const Chennal = () => {
         </button>
       </li>
     ) : (
+
       <li className="nav-item w-100" key={id}>
-        <Dropdown as={ButtonGroup} className="d-flex show dropdown btn-group">
+
+        <Dropdown as={ButtonGroup} className="d-flex">
           <Button
-            variant={id === channelId ? 'w-100 rounded-0 text-start btn btn-secondary' : 'w-100 rounded-0 text-start btn'}
+            variant={id === activeChannelId ? 'w-100 rounded-0 text-start text-truncate btn btn-secondary' : 'w-100 rounded-0 text-start text-truncate btn'}
             onClick={() => getChannelId(id)}
             id="dropdown-split-basic"
+            className="w-50"
           >
             <span className="me-1">#</span>{name}
           </Button>
 
           <Dropdown.Toggle
-            variant={id === channelId ? 'flex-grow-0 dropdown-toggle dropdown-toggle-split btn btn-secondary' : 'flex-grow-0 dropdown-toggle dropdown-toggle-split btn'}
+            variant={id === activeChannelId ? 'flex-grow-0 dropdown-toggle dropdown-toggle-split btn btn-secondary' : 'flex-grow-0 dropdown-toggle dropdown-toggle-split btn'}
             id="react-aria9457689434-1"
-          />
+          >
+            <span className="visually-hidden">Управление каналом</span>
+          </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1" onClick={() => { setDeleteModalActive1(true); setDeleteId(id); }}>Удалить</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Переименовать</Dropdown.Item>
+            <Dropdown.Item href="#/action-1" onClick={() => { setDeleteModalActive1(true); setChannelId(id); }}>Удалить</Dropdown.Item>
+            <Dropdown.Item href="#/action-2" onClick={() => { setRenameModalActive(true); setChannelId(id); }}>Переименовать</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
+
       </li>
+
     ));
   });
 
   return (
     <>
-      <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
-        <div className="d-flex justify-content-between mb-2 ps-4 pe-2"><span>Каналы</span>
+      <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
+        <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4"><span>Каналы</span>
           <button
             type="button"
             className="p-0 text-primary btn btn-group-vertical"
@@ -109,7 +121,7 @@ const Chennal = () => {
             <span className="visually-hidden">+</span>
           </button>
         </div>
-        <ul className="nav flex-column nav-pills nav-fill px-2">
+        <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
           {ChannelDisplay}
         </ul>
       </div>
@@ -117,7 +129,12 @@ const Chennal = () => {
       <DeleteChannelModal
         active={deleteModalActive1}
         setActive={setDeleteModalActive1}
-        channelId={deleteId}
+        channelId={channelId}
+      />
+      <RenameChannelModal
+        active={renameModalActive}
+        setActive={setRenameModalActive}
+        channelId={channelId}
       />
     </>
 

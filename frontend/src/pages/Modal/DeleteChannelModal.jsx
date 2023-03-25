@@ -16,7 +16,7 @@ const DeleteChannelModal = ({ active, setActive, channelId }) => {
   return (
         <Modal show={active} centered>
             <Modal.Header closeButton onClick={() => setActive(false)}>
-                <Modal.Title class="modal-title h4">Удалить канал</Modal.Title>
+                <Modal.Title className="modal-title h4">Удалить канал</Modal.Title>
             </Modal.Header>
                 <Modal.Body>
                     <p className="lead">Уверены?</p>

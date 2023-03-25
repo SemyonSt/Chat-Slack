@@ -8,11 +8,12 @@ import React, { useRef } from 'react';
 import {
   Modal, Button, Form,
 } from 'react-bootstrap';
+
 import { io } from 'socket.io-client';
 
 const socket = io();
 
-const AddChannelModal = ({ active, setActive }) => {
+const RenameChannelModal = ({ active, setActive, channelId }) => {
   const channels = useSelector((state) => state.channelReduser.channels);
   const channelNames = channels.map((i) => i.name);
 
@@ -34,15 +35,16 @@ const AddChannelModal = ({ active, setActive }) => {
     validateOnChange: false,
     errorToken: false,
     onSubmit: () => {
-      socket.emit('newChannel', { name: values.channelName });
+      socket.emit('renameChannel', { id: channelId, name: values.channelName });
       setActive(!active);
       values.channelName = '';
     },
   });
 
-  const errClass = cn('mb-10 form-control', {
-    'mb-10 form-control is-invalid': errors.channelName,
+  const errClass = cn('mb-2 form-control', {
+    'mb-2 form-control is-invalid': errors.channelName,
   });
+
 
   const inputRef = useRef(null);
 
@@ -77,4 +79,4 @@ const AddChannelModal = ({ active, setActive }) => {
     </Modal>
   );
 };
-export default AddChannelModal;
+export default RenameChannelModal;
