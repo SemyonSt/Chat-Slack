@@ -5,9 +5,13 @@ import axios from 'axios';
 // import { Redirect } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Login from '../images/login.jpeg';
 import routes from '../routes';
 import AuthContext from '../context/AuthContext';
+
+
 
 const schema = yup.object().shape({
   username: yup.string()
@@ -22,6 +26,7 @@ const schema = yup.object().shape({
 const Logopages = () => {
   const navigate = useNavigate();
   const { setToken } = useContext(AuthContext);
+  const notify = () => toast.error('Ошибка сети');
 
   const {
     values, errors, handleBlur, touched, setSubmitting, handleChange, handleSubmit,
@@ -36,7 +41,6 @@ const Logopages = () => {
     onSubmit: () => {
       axios.post(routes.login(), { username: values.username, password: values.password })
         .then((response) => {
-          // console.log('POST Data', response.data);
           const data = JSON.stringify(response.data);
           localStorage.clear();
           localStorage.setItem('userInfo', data);
@@ -45,6 +49,10 @@ const Logopages = () => {
           console.log('!!!!!!!!!!!!!!!!!!!!', data);
         })
         .catch((err) => {
+          console.log('LALALALLA', err.message);
+          if (err.message === 'Network Error') {
+            return notify();
+          }
           if (err.response.status === 401) {
             errors.password = 'Неверные имя пользователя или пароль';
             return setSubmitting(false);
@@ -117,7 +125,7 @@ const Logopages = () => {
               </form>
             </div>
             <div className="card-footer p-4">
-              <div className="text-center"><span>Нет аккаунта?</span>
+              <div className="text-center"><span>Нет аккаунта? </span>
                 <a href="/signup">Регистрация</a>
               </div>
             </div>

@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
-
+import { useTranslation } from 'react-i18next';
 
 import React, { useRef } from 'react';
 import {
@@ -10,18 +10,23 @@ import {
 } from 'react-bootstrap';
 import { io } from 'socket.io-client';
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const socket = io();
 
 const AddChannelModal = ({ active, setActive }) => {
+  const { t } = useTranslation();
   const channels = useSelector((state) => state.channelReduser.channels);
   const channelNames = channels.map((i) => i.name);
+  const notify = () => toast.success('Канал создан');
 
   const schema = yup.object().shape({
     channelName: yup.string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле')
-      .notOneOf(channelNames, 'Должно быть уникальным'),
+      .min(3, t('error.minMaxSymbols'))
+      .max(20, t('error.minMaxSymbols'))
+      .required(t('error.required'))
+      .notOneOf(channelNames, t('error.uniq')),
   });
 
   const {
@@ -37,6 +42,7 @@ const AddChannelModal = ({ active, setActive }) => {
       socket.emit('newChannel', { name: values.channelName });
       setActive(!active);
       values.channelName = '';
+      notify();
     },
   });
 
@@ -53,7 +59,7 @@ const AddChannelModal = ({ active, setActive }) => {
   return (
     <Modal show={active} centered onShow={handleShowModal}>
       <Modal.Header closeButton onClick={() => setActive(false)}>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('interface.addChannel')}</Modal.Title>
       </Modal.Header>
 
       <form onSubmit={handleSubmit}>
@@ -70,8 +76,8 @@ const AddChannelModal = ({ active, setActive }) => {
           <div className="invalid-feedback">{errors.channelName}</div>
         </Form.Group>
         <div className="d-flex justify-content-end">
-          <Button variant="secondary" onClick={() => setActive(false)}>Отменить</Button>
-          <Button variant="primary" type="submit">Отправить</Button>
+          <Button variant="secondary" onClick={() => setActive(false)}>{t('interface.cancel')}</Button>
+          <Button variant="primary" type="submit">{t('interface.submit')}</Button>
         </div>
       </form>
     </Modal>

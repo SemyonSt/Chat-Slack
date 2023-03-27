@@ -4,8 +4,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Registration from '../images/registrate.jpg';
-
 
 
 const schema = yup.object().shape({
@@ -23,6 +24,7 @@ const schema = yup.object().shape({
 
 const Registratepages = () => {
   const navigate = useNavigate();
+  const notify = () => toast.error('Ошибка сети');
 
   const {
     values, errors, touched, handleBlur, setSubmitting, handleChange, handleSubmit,
@@ -43,6 +45,9 @@ const Registratepages = () => {
           navigate('/');
         })
         .catch((err) => {
+          if (err.message === 'Network Error') {
+            return notify();
+          }
           if (err.response.status === 409) {
             errors.username = 'Такой пользователь уже существует';
             return setSubmitting(false);

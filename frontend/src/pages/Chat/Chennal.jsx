@@ -5,14 +5,16 @@ import { io } from 'socket.io-client';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
+import filterWords from 'leo-profanity';
 
-
+import { useTranslation } from 'react-i18next';
 import { actions as channelsActions } from '../../slices/chanalSlice';
 import slice from '../../slices/index';
 
 import AddChannelModal from '../Modal/AddChannel';
 import DeleteChannelModal from '../Modal/DeleteChannelModal';
 import RenameChannelModal from '../Modal/RenameChannelModal';
+
 
 
 const socket = io();
@@ -32,9 +34,13 @@ socket.on('renameChannel', (payload) => {
 
 
 const Chennal = () => {
+  filterWords.loadDictionary('ru');
+
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const channels = useSelector((state) => state.channelReduser.channels);
   const activeChannelId = useSelector((state) => state.channelReduser.channelId);
+
   // console.log(channels);
 
   const [addModalActive, setAddModalActive] = useState(false);
@@ -74,7 +80,7 @@ const Chennal = () => {
             id="dropdown-split-basic"
             className="w-50"
           >
-            <span className="me-1">#</span>{name}
+            <span className="me-1">#</span>{filterWords.clean(name)}
           </Button>
 
           <Dropdown.Toggle
@@ -98,7 +104,7 @@ const Chennal = () => {
   return (
     <>
       <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-        <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4"><span>Каналы</span>
+        <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4"><span>{t('interface.channels')}</span>
           <button
             type="button"
             className="p-0 text-primary btn btn-group-vertical"

@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 
+import filterWords from 'leo-profanity';
 import { actions as messageActions } from '../../slices/messageSlice';
+
 
 import slice from '../../slices/index';
 
@@ -12,6 +14,8 @@ socket.on('newMessage', (payload) => {
 });
 
 const ChatMessage = () => {
+  filterWords.loadDictionary('ru');
+
   const [message, setMessage] = useState('');
   const channels = useSelector((state) => state.channelReduser.channels);
   const channelsId = useSelector((state) => state.channelReduser.channelId);
@@ -41,7 +45,7 @@ const ChatMessage = () => {
   const outputMessage = chennaMessage.map((mes) => {
     const { body, username, id } = mes;
     return (
-      <div className="text-break mb-2" key={id}><b>{username}</b>: {body}</div>
+      <div className="text-break mb-2" key={id}><b>{username}</b>: {filterWords.clean(body)}</div>
     );
   });
 

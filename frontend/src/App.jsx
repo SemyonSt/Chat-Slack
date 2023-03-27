@@ -1,6 +1,10 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import React, { useState, useMemo } from 'react';
 import { Provider } from 'react-redux';
+import i18next from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import { ToastContainer } from 'react-toastify';
 import ErrorPages from './pages/ErrorPages';
 import LoginPages from './pages/LoginPages';
 import RegisrtatPages from './pages/RegisrtatPages';
@@ -8,6 +12,8 @@ import ChatPages from './pages/ChatPages';
 
 import AuthContext from './context/AuthContext';
 import store from './slices/index';
+import ru from './locales/index';
+
 
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState('');
@@ -19,6 +25,14 @@ const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+i18next
+  .use(initReactI18next)
+  .use(LanguageDetector)
+  .init({
+    fallbackLng: 'ru',
+    resources: { ru },
+  });
 
 
 const App = () => {
@@ -48,7 +62,7 @@ const App = () => {
             </AuthProvider>
           </Provider>
         </div>
-        <div className="Toastify" />
+        <ToastContainer />
       </div>
     </div>
   );
