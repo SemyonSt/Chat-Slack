@@ -1,3 +1,4 @@
 import ru from './ru';
+import en from './en';
 
-export default ru;
+export default { en, ru };

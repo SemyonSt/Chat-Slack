@@ -91,8 +91,8 @@ const Chennal = () => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1" onClick={() => { setDeleteModalActive1(true); setChannelId(id); }}>Удалить</Dropdown.Item>
-            <Dropdown.Item href="#/action-2" onClick={() => { setRenameModalActive(true); setChannelId(id); }}>Переименовать</Dropdown.Item>
+            <Dropdown.Item href="#/action-1" onClick={() => { setDeleteModalActive1(true); setChannelId(id); }}>{t('interface.delete')}</Dropdown.Item>
+            <Dropdown.Item href="#/action-2" onClick={() => { setRenameModalActive(true); setChannelId(id); }}>{t('interface.rename')}</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
 

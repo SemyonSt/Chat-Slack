@@ -1,10 +1,12 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import i18next from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import { initReactI18next, useTranslation } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { ToastContainer } from 'react-toastify';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import ErrorPages from './pages/ErrorPages';
 import LoginPages from './pages/LoginPages';
 import RegisrtatPages from './pages/RegisrtatPages';
@@ -12,7 +14,7 @@ import ChatPages from './pages/ChatPages';
 
 import AuthContext from './context/AuthContext';
 import store from './slices/index';
-import ru from './locales/index';
+import resources from './locales/index';
 
 
 const AuthProvider = ({ children }) => {
@@ -31,12 +33,22 @@ i18next
   .use(LanguageDetector)
   .init({
     fallbackLng: 'ru',
-    resources: { ru },
+    resources,
   });
+
+const changeLanguage = (lng) => {
+  i18next.changeLanguage(lng);
+};
 
 
 const App = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const [language, setLanguge] = useState(localStorage.getItem('language') || 'Русский');
+
+  useEffect(() => {
+    localStorage.setItem('language', language);
+  });
 
   const logOut = () => {
     localStorage.removeItem('userInfo');
@@ -47,9 +59,22 @@ const App = () => {
     <div className="h-100">
       <div className="h-100" id="chat">
         <div className="d-flex flex-column h-100">
-          <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
+          <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white" style={{ display: 'flex', alignItems: 'center' }}>
             <div className="container"><a className="navbar-brand" href="/">Hexlet Chat</a></div>
-            {localStorage.getItem('userInfo') ? <button style={{ marginRight: '250px' }} onClick={() => logOut()} type="button" className="btn btn-primary">Выйти</button> : null}
+            {localStorage.getItem('userInfo') ? <button style={{ marginRight: '10px' }} onClick={() => logOut()} type="button" className="btn btn-primary">{t('interface.bntExit')}</button> : null}
+            <div>
+              <DropdownButton
+                id="dropdown-basic-button"
+                title={language}
+                className="btn-language"
+                variant="light"
+                style={{ marginRight: '200px' }}
+              >
+                <Dropdown.Item href="#/action-2" onClick={() => { changeLanguage('ru'); setLanguge('Русский'); }}>Русский</Dropdown.Item>
+                <Dropdown.Item href="#/action-1" onClick={() => { changeLanguage('en'); setLanguge('English'); }}>English</Dropdown.Item>
+              </DropdownButton>
+            </div>
+
           </nav>
           <Provider store={store}>
             <AuthProvider>

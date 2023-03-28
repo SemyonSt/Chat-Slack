@@ -1,30 +1,52 @@
 import * as yup from 'yup';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useTranslation } from 'react-i18next';
 import Registration from '../images/registrate.jpg';
 
 
-const schema = yup.object().shape({
-  username: yup.string()
-    .min(3, 'От 3 до 20 символов')
-    .max(20, 'От 3 до 20 символов')
-    .required('Обязательное поле'),
-  password: yup.string()
-    .min(6, 'Не менее 6 символов')
-    .required('Обязательное поле'),
-  confirmPassword: yup.string()
-    .oneOf([yup.ref('password'), null], 'Пароли должны совпадать')
-    .required('Обязательное поле'),
-});
-
 const Registratepages = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
-  const notify = () => toast.error('Ошибка сети');
+  const notify = () => toast.error(t('error.networkError'));
+
+  const schema = yup.object().shape({
+    username: yup.string()
+      .min(3, t('error.minMaxSymbols'))
+      .max(20, t('error.minMaxSymbols'))
+      .required(t('error.required')),
+    password: yup.string()
+      .min(6, t('error.min'))
+      .required(t('error.required')),
+    confirmPassword: yup.string()
+      .oneOf([yup.ref('password'), null], t('error.passwordMismatch'))
+      .required(t('error.required')),
+  });
+
+  // Добавление фокусов на инпуты
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
+  const btnRef = useRef(null);
+
+  useEffect(() => {
+    usernameRef.current.focus();
+  }, []);
+
+  // Прослушиватель событий при нажатии на клавиатуру
+  // eslint-disable-next-line consistent-return
+  const handleKeyDown = (event, ref) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      return ref.current.focus();
+    }
+  };
+
 
   const {
     values, errors, touched, handleBlur, setSubmitting, handleChange, handleSubmit,
@@ -49,7 +71,7 @@ const Registratepages = () => {
             return notify();
           }
           if (err.response.status === 409) {
-            errors.username = 'Такой пользователь уже существует';
+            errors.username = t('error.alreadyExists');
             return setSubmitting(false);
           }
           return setSubmitting(false);
@@ -69,13 +91,15 @@ const Registratepages = () => {
                 <img
                   src={Registration}
                   className="rounded-circle"
-                  alt="Регистрация"
+                  alt={t('regisrtatePages.registration')}
                 />
               </div>
               <form onSubmit={handleSubmit} className="w-50">
-                <h1 className="text-center mb-4">Регистрация</h1>
+                <h1 className="text-center mb-4">{t('regisrtatePages.registration')}</h1>
                 <div className="form-floating mb-3">
                   <input
+                    ref={usernameRef}
+                    onKeyDown={(event) => handleKeyDown(event, passwordRef)}
                     placeholder="От 3 до 20 символов"
                     name="username"
                     autoComplete="username"
@@ -90,12 +114,14 @@ const Registratepages = () => {
                   <label
                     className="form-label"
                     htmlFor="username"
-                  >Имя пользователя
+                  >{t('regisrtatePages.username')}
                   </label>
                   <div className="invalid-tooltip">{errors.username}</div>
                 </div>
                 <div className="form-floating mb-3">
                   <input
+                    ref={passwordRef}
+                    onKeyDown={(event) => handleKeyDown(event, confirmPasswordRef)}
                     placeholder="Не менее 6 символов"
                     name="password"
                     aria-describedby="passwordHelpBlock"
@@ -107,20 +133,20 @@ const Registratepages = () => {
                     className={errors.password && touched.password ? 'form-control is-invalid' : 'form-control'}
                     onChange={handleChange}
                     value={values.password}
-
-
                   />
                   <div className="invalid-tooltip">{errors.password}</div>
                   <label
                     className="form-label"
                     htmlFor="password"
                   >
-                    Пароль
+                    {t('regisrtatePages.password')}
                   </label>
                 </div>
                 <div className="form-floating mb-4">
                   <input
-                    placeholder="Пароли должны совпадать"
+                    ref={confirmPasswordRef}
+                    onKeyDown={(event) => handleKeyDown(event, btnRef)}
+                    placeholder={t('error.passwordMismatch')}
                     name="confirmPassword"
                     required=""
                     autoComplete="new-password"
@@ -135,14 +161,16 @@ const Registratepages = () => {
                   <label
                     className="form-label"
                     htmlFor="confirmPassword"
-                  >Подтвердите пароль
+                  >{t('regisrtatePages.confirmPassword')}
                   </label>
                 </div>
                 <button
+                  ref={btnRef}
                   type="submit"
                   className="w-100 mb-3 btn btn-outline-primary btn-light"
+                  onClick={handleSubmit}
                 >
-                  Зарегистрироваться
+                  {t('regisrtatePages.registerButton')}
                 </button>
               </form>
             </div>

@@ -24,4 +24,26 @@
 html, body, #root {
   height: 100vh;
 }
+/*
+.btn-language {
+  background-image: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  padding: 12px 24px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+}
 
+.btn-language.en {
+  background-image: url('../images/en.png');
+}
+
+.btn-language.ru {
+  background-image: url('../images/ru.jpeg');
+}
+*/

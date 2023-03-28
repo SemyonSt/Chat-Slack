@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
+
+import { useTranslation } from 'react-i18next';
 
 import filterWords from 'leo-profanity';
 import { actions as messageActions } from '../../slices/messageSlice';
@@ -14,12 +16,19 @@ socket.on('newMessage', (payload) => {
 });
 
 const ChatMessage = () => {
+  const { t } = useTranslation();
   filterWords.loadDictionary('ru');
 
   const [message, setMessage] = useState('');
   const channels = useSelector((state) => state.channelReduser.channels);
   const channelsId = useSelector((state) => state.channelReduser.channelId);
   const messages = useSelector((state) => state.messageReducer.message);
+
+  // Создание фокуса на инпут сообщения
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef.current.focus();
+  });
 
   // отправка сообщений на сервер
   const sendMessage = (e) => {
@@ -53,16 +62,16 @@ const ChatMessage = () => {
   const numberOfMessages = (number) => {
     number %= 100;
     if (number >= 5 && number <= 20) {
-      return 'сообщений';
+      return t('messagesCounter.messagesCount_zero');
     }
     number %= 10;
     if (number === 1) {
-      return 'сообщение';
+      return t('messagesCounter.messagesCount_one');
     }
     if (number >= 2 && number <= 4) {
-      return 'сообщения';
+      return t('messagesCounter.messagesCount_few');
     }
-    return 'сообщений';
+    return t('messagesCounter.messagesCount_many');
   };
 
   return (
@@ -85,16 +94,17 @@ const ChatMessage = () => {
           <form noValidate="" className="py-1 border rounded-2" onSubmit={sendMessage}>
             <div className="input-group has-validation">
               <input
+                ref={inputRef}
                 name="body"
                 aria-label="Новое сообщение"
-                placeholder="Введите сообщение..."
+                placeholder={t('interface.enterMessage')}
                 className="border-0 p-0 ps-2 form-control"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
               <button
                 type="submit"
-                disabled=""
+                disabled={!message}
                 className="btn btn-group-vertical"
               >
                 <svg

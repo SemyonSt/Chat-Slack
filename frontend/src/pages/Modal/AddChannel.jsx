@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   Modal, Button, Form,
 } from 'react-bootstrap';
@@ -19,7 +19,7 @@ const AddChannelModal = ({ active, setActive }) => {
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channelReduser.channels);
   const channelNames = channels.map((i) => i.name);
-  const notify = () => toast.success('Канал создан');
+  const notify = () => toast.success(t('notify.create'));
 
   const schema = yup.object().shape({
     channelName: yup.string()
@@ -52,12 +52,15 @@ const AddChannelModal = ({ active, setActive }) => {
 
   const inputRef = useRef(null);
 
-  const handleShowModal = () => {
-    inputRef.current.focus();
-  };
+  useEffect(() => {
+    // eslint-disable-next-line functional/no-conditional-statements
+    if (inputRef.current !== null) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   return (
-    <Modal show={active} centered onShow={handleShowModal}>
+    <Modal show={active} centered>
       <Modal.Header closeButton onClick={() => setActive(false)}>
         <Modal.Title>{t('interface.addChannel')}</Modal.Title>
       </Modal.Header>

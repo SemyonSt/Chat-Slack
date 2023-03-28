@@ -10,7 +10,7 @@ const socket = io();
 
 const DeleteChannelModal = ({ active, setActive, channelId }) => {
   const { t } = useTranslation();
-  const notify = () => toast.success('Канал удален');
+  const notify = () => toast.success(t('notify.delete'));
   const submit = () => {
     socket.emit('removeChannel', { id: channelId });
     setActive(false);

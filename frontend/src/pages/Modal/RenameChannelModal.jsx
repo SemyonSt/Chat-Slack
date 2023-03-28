@@ -18,7 +18,7 @@ const RenameChannelModal = ({ active, setActive, channelId }) => {
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channelReduser.channels);
   const channelNames = channels.map((i) => i.name);
-  const notify = () => toast.success('Канал переименован');
+  const notify = () => toast.success(t('notify.rename'));
 
   const schema = yup.object().shape({
     channelName: yup.string()
