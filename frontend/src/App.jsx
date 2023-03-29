@@ -7,6 +7,8 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { ToastContainer } from 'react-toastify';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import Button from 'react-bootstrap/Button';
+import { Provider as RollbalProvider, ErrorBoundary } from '@rollbar/react';
 import ErrorPages from './pages/ErrorPages';
 import LoginPages from './pages/LoginPages';
 import RegisrtatPages from './pages/RegisrtatPages';
@@ -16,6 +18,11 @@ import AuthContext from './context/AuthContext';
 import store from './slices/index';
 import resources from './locales/index';
 
+
+const rollbarConfig = {
+  accessToken: 'e4529ece2f6d496e8e58ff3c0243ff6b',
+  environment: 'production',
+};
 
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState('');
@@ -59,9 +66,9 @@ const App = () => {
     <div className="h-100">
       <div className="h-100" id="chat">
         <div className="d-flex flex-column h-100">
-          <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white" style={{ display: 'flex', alignItems: 'center' }}>
+          <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
             <div className="container"><a className="navbar-brand" href="/">Hexlet Chat</a></div>
-            {localStorage.getItem('userInfo') ? <button style={{ marginRight: '10px' }} onClick={() => logOut()} type="button" className="btn btn-primary">{t('interface.bntExit')}</button> : null}
+            {localStorage.getItem('userInfo') ? <Button onClick={() => logOut()} type="button" className="btn btn-primary">{t('interface.bntExit')}</Button> : null}
             <div>
               <DropdownButton
                 id="dropdown-basic-button"
@@ -76,16 +83,20 @@ const App = () => {
             </div>
 
           </nav>
-          <Provider store={store}>
-            <AuthProvider>
-              <Routes>
-                <Route path="/" element={<ChatPages />} />
-                <Route path="/login" element={<LoginPages />} />
-                <Route path="/signup" element={<RegisrtatPages />} />
-                <Route path="*" element={<ErrorPages />} />
-              </Routes>
-            </AuthProvider>
-          </Provider>
+          <RollbalProvider config={rollbarConfig}>
+            <ErrorBoundary>
+              <Provider store={store}>
+                <AuthProvider>
+                  <Routes>
+                    <Route path="/" element={<ChatPages />} />
+                    <Route path="/login" element={<LoginPages />} />
+                    <Route path="/signup" element={<RegisrtatPages />} />
+                    <Route path="*" element={<ErrorPages />} />
+                  </Routes>
+                </AuthProvider>
+              </Provider>
+            </ErrorBoundary>
+          </RollbalProvider>
         </div>
         <ToastContainer />
       </div>

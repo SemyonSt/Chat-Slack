@@ -24,6 +24,21 @@
 html, body, #root {
   height: 100vh;
 }
+
+.shadow-sm {
+
+  display: 'flex';
+  align-items: 'center';
+
+} 
+
+.btn-primary {
+  margin-right: 10px;
+}
+
+
+
+
 /*
 .btn-language {
   background-image: no-repeat;

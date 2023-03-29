@@ -69,7 +69,7 @@ const ChatMessage = () => {
       return t('messagesCounter.messagesCount_one');
     }
     if (number >= 2 && number <= 4) {
-      return t('messagesCounter.messagesCount_few');
+      return t('messagesCounter.messagesCount_other');
     }
     return t('messagesCounter.messagesCount_many');
   };

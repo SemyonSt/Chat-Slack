@@ -10,7 +10,7 @@ export default {
       delete: 'Delete',
       sure: 'Sure?',
       enterMessage: 'Enter your message...',
-      bntExit: 'SignOut',
+      bntExit: 'Sign Out',
       rename: 'Rename',
     },
     loginPages: {

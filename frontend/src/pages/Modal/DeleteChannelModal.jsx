@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Modal, Button,
+  Modal, Button, FormGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { io } from 'socket.io-client';
@@ -18,18 +18,18 @@ const DeleteChannelModal = ({ active, setActive, channelId }) => {
   };
 
   return (
-        <Modal show={active} centered>
-            <Modal.Header closeButton onClick={() => setActive(false)}>
-                <Modal.Title className="modal-title h4">{t('interface.deleteChannel')}</Modal.Title>
-            </Modal.Header>
-                <Modal.Body>
-                    <p className="lead">{t('interface.sure')}</p>
-                </Modal.Body>
-                <div className="d-flex justify-content-end">
-                <Button variant="secondary" onClick={() => setActive(false)}>{t('interface.cancel')}</Button>
-                <Button variant="danger" type="submit" onClick={() => submit()}>{t('interface.delete')}</Button>
-                </div>
-        </Modal>
+    <Modal show={active} centered>
+      <Modal.Header closeButton onClick={() => setActive(false)}>
+        <Modal.Title className="modal-title h4">{t('interface.deleteChannel')}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <p className="lead">{t('interface.sure')}</p>
+      </Modal.Body>
+      <FormGroup className="d-flex justify-content-end">
+        <Button className="me-2 btn-secondary" variant="secondary" onClick={() => setActive(false)}>{t('interface.cancel')}</Button>
+        <Button className="btn-primary" variant="danger" type="submit" onClick={() => submit()}>{t('interface.delete')}</Button>
+      </FormGroup>
+    </Modal>
   );
 };
 export default DeleteChannelModal;

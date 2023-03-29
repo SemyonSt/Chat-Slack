@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import React, { useRef, useEffect } from 'react';
 import {
-  Modal, Button, Form,
+  Modal, Button, Form, FormGroup,
 } from 'react-bootstrap';
 import { io } from 'socket.io-client';
 
@@ -30,7 +30,7 @@ const AddChannelModal = ({ active, setActive }) => {
   });
 
   const {
-    values, errors, handleBlur, handleChange, handleSubmit,
+    values, errors, handleChange, handleSubmit,
   } = useFormik({
     initialValues: {
       channelName: '',
@@ -39,10 +39,14 @@ const AddChannelModal = ({ active, setActive }) => {
     validateOnChange: false,
     errorToken: false,
     onSubmit: () => {
-      socket.emit('newChannel', { name: values.channelName });
-      setActive(!active);
-      values.channelName = '';
-      notify();
+      try {
+        socket.emit('newChannel', { name: values.channelName });
+        setActive(!active);
+        values.channelName = '';
+        notify();
+      } catch (error) {
+        console.log('ERRROROROOR!!!!!!!!!!!', error);
+      }
     },
   });
 
@@ -60,28 +64,27 @@ const AddChannelModal = ({ active, setActive }) => {
   }, []);
 
   return (
-    <Modal show={active} centered>
+    <Modal show={active} centered className="modal-form">
       <Modal.Header closeButton onClick={() => setActive(false)}>
         <Modal.Title>{t('interface.addChannel')}</Modal.Title>
       </Modal.Header>
 
       <form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <input
+          <Form.Control
             ref={inputRef}
             name="channelName"
             id="channelName"
             className={errClass}
             value={values.channelName}
             onChange={handleChange}
-            onBlur={handleBlur}
           />
           <div className="invalid-feedback">{errors.channelName}</div>
         </Form.Group>
-        <div className="d-flex justify-content-end">
-          <Button variant="secondary" onClick={() => setActive(false)}>{t('interface.cancel')}</Button>
-          <Button variant="primary" type="submit">{t('interface.submit')}</Button>
-        </div>
+        <FormGroup className="d-flex justify-content-end mt-3">
+          <Button className="me-2 btn-secondary" variant="secondary" onClick={() => setActive(false)}>{t('interface.cancel')}</Button>
+          <Button className="btn-primary" variant="primary" type="submit">{t('interface.submit')}</Button>
+        </FormGroup>
       </form>
     </Modal>
   );
