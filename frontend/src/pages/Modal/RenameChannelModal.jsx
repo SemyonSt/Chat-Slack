@@ -67,14 +67,16 @@ const RenameChannelModal = ({ active, setActive, channelId }) => {
 
       <form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Control
-            ref={inputRef}
-            name="channelName"
-            id="channelName"
-            className={errClass}
-            value={values.channelName}
-            onChange={handleChange}
-          />
+          <Modal.Footer>
+            <Form.Control
+              ref={inputRef}
+              name="channelName"
+              id="channelName"
+              className={errClass}
+              value={values.channelName}
+              onChange={handleChange}
+            />
+          </Modal.Footer>
           <div className="invalid-feedback">{errors.channelName}</div>
         </Form.Group>
         <FormGroup className="d-flex justify-content-end">

@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import axios from 'axios';
@@ -14,6 +14,7 @@ const Registratepages = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const notify = () => toast.error(t('error.networkError'));
+  const [isLoading, setIsLoading] = useState(false);
 
   const schema = yup.object().shape({
     username: yup.string()
@@ -75,6 +76,10 @@ const Registratepages = () => {
             return setSubmitting(false);
           }
           return setSubmitting(false);
+        })
+        .finally(() => {
+          console.log('YES');
+          setIsLoading(false); // сброс isLoading в false после завершения запроса
         });
     },
   });
@@ -144,6 +149,7 @@ const Registratepages = () => {
                 </div>
                 <div className="form-floating mb-4">
                   <input
+                    disabled={isLoading}
                     ref={confirmPasswordRef}
                     onKeyDown={(event) => handleKeyDown(event, btnRef)}
                     placeholder={t('error.passwordMismatch')}
@@ -165,6 +171,7 @@ const Registratepages = () => {
                   </label>
                 </div>
                 <button
+                  disabled={isLoading}
                   ref={btnRef}
                   type="submit"
                   className="w-100 mb-3 btn btn-outline-primary btn-light"

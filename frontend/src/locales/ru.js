@@ -40,7 +40,7 @@ export default {
     messagesCounter: {
       messagesCount_zero: ' сообщений',
       messagesCount_one: ' сообщение',
-      messagesCount_few: ' сообщения',
+      messagesCount_other: ' сообщения',
       messagesCount_many: ' сообщений',
     },
     notify: {

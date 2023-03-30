@@ -1,4 +1,6 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, {
+  useContext, useRef, useEffect, useState,
+} from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
@@ -20,6 +22,7 @@ const Logopages = () => {
   const { setToken } = useContext(AuthContext);
   const notify = () => toast.error('Ошибка сети');
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
 
   const schema = yup.object().shape({
     username: yup.string()
@@ -61,8 +64,10 @@ const Logopages = () => {
     validateOnChange: false,
     errorToken: false,
     onSubmit: () => {
+      setIsLoading(true);
       axios.post(routes.login(), { username: values.username, password: values.password })
         .then((response) => {
+          console.log('!!!!!!!!!121212', crypto.randomUUID());
           const data = JSON.stringify(response.data);
           localStorage.clear();
           localStorage.setItem('userInfo', data);
@@ -78,6 +83,10 @@ const Logopages = () => {
             return setSubmitting(false);
           }
           return setSubmitting(false);
+        })
+        .finally(() => {
+          console.log('YES');
+          setIsLoading(false); // сброс isLoading в false после завершения запроса
         });
     },
   });
@@ -143,6 +152,7 @@ const Logopages = () => {
                   </label>
                 </div>
                 <button
+                  disabled={isLoading}
                   ref={btnRef}
                   type="button"
                   className="w-100 mb-3 btn btn-outline-primary"

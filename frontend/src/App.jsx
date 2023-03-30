@@ -21,7 +21,7 @@ import resources from './locales/index';
 
 const rollbarConfig = {
   accessToken: 'e4529ece2f6d496e8e58ff3c0243ff6b',
-  environment: 'production',
+  environment: 'testenv',
 };
 
 const AuthProvider = ({ children }) => {

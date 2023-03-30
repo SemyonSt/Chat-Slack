@@ -71,21 +71,24 @@ const AddChannelModal = ({ active, setActive }) => {
 
       <form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Control
-            ref={inputRef}
-            name="channelName"
-            id="channelName"
-            className={errClass}
-            value={values.channelName}
-            onChange={handleChange}
-          />
-          <div className="invalid-feedback">{errors.channelName}</div>
+          <Modal.Footer>
+            <Form.Control
+              ref={inputRef}
+              name="channelName"
+              id="channelName"
+              className={errClass}
+              value={values.channelName}
+              onChange={handleChange}
+            />
+            <div className="invalid-feedback">{errors.channelName}</div>
+          </Modal.Footer>
         </Form.Group>
         <FormGroup className="d-flex justify-content-end mt-3">
           <Button className="me-2 btn-secondary" variant="secondary" onClick={() => setActive(false)}>{t('interface.cancel')}</Button>
           <Button className="btn-primary" variant="primary" type="submit">{t('interface.submit')}</Button>
         </FormGroup>
       </form>
+
     </Modal>
   );
 };

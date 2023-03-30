@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
-
+import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import filterWords from 'leo-profanity';
@@ -17,7 +17,9 @@ socket.on('newMessage', (payload) => {
 
 const ChatMessage = () => {
   const { t } = useTranslation();
+
   filterWords.loadDictionary('ru');
+
 
   const [message, setMessage] = useState('');
   const channels = useSelector((state) => state.channelReduser.channels);
@@ -74,6 +76,15 @@ const ChatMessage = () => {
     return t('messagesCounter.messagesCount_many');
   };
 
+
+  // перемотка скрола на новое сообщение
+  const messagesBoxRef = useRef(null);
+
+  // вызываем scrollTop при обновлении outputMessage
+  useEffect(() => {
+    messagesBoxRef.current.scrollTop = messagesBoxRef.current.scrollHeight;
+  }, [outputMessage]);
+
   return (
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">
@@ -87,13 +98,13 @@ const ChatMessage = () => {
             {chennaMessage.length} {numberOfMessages((chennaMessage.length))}
           </span>
         </div>
-        <div id="messages-box" className="chat-messages overflow-auto px-5 ">
+        <div id="messages-box" className="chat-messages overflow-auto px-5 " ref={messagesBoxRef}>
           {outputMessage}
         </div>
         <div className="mt-auto px-5 py-3">
           <form noValidate="" className="py-1 border rounded-2" onSubmit={sendMessage}>
             <div className="input-group has-validation">
-              <input
+              <Form.Control
                 ref={inputRef}
                 name="body"
                 aria-label="Новое сообщение"
