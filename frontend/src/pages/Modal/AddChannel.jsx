@@ -70,7 +70,7 @@ const AddChannelModal = ({ active, setActive }) => {
       </Modal.Header>
 
       <form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Group className="mb-3">
           <Modal.Footer>
             <Form.Control
               ref={inputRef}
