@@ -20,12 +20,12 @@ import RenameChannelModal from '../Modal/RenameChannelModal';
 const socket = io();
 socket.on('newChannel', (payload) => {
   slice.dispatch(channelsActions.addChannel(payload));
-  slice.dispatch(channelsActions.setChannelId(payload.id));
+  // slice.dispatch(channelsActions.setChannelId(payload.id));
 });
 
 socket.on('removeChannel', (payload) => {
   slice.dispatch(channelsActions.removeChannel(payload));
-  slice.dispatch(channelsActions.setChannelId(1));
+  // slice.dispatch(channelsActions.setChannelId(1));
 });
 
 socket.on('renameChannel', (payload) => {
@@ -48,11 +48,12 @@ const Chennal = () => {
   const [renameModalActive, setRenameModalActive] = useState(false);
 
   const [channelId, setChannelId] = useState(null);
+  // console.log(activeChannelId);
 
   const getChannelId = (id) => {
     dispatch(channelsActions.setChannelId(id));
   };
-
+  const channelToRename = channels.find((channel) => channel.id === channelId);
 
   const ChannelDisplay = channels.map((channel) => {
     const { name, id, removable } = channel;
@@ -141,6 +142,7 @@ const Chennal = () => {
         active={renameModalActive}
         setActive={setRenameModalActive}
         channelId={channelId}
+        channelToRename={channelToRename ? channelToRename.name : ''}
       />
     </>
 

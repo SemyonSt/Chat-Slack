@@ -41,6 +41,7 @@ const AddChannelModal = ({ active, setActive }) => {
     onSubmit: () => {
       try {
         socket.emit('newChannel', { name: values.channelName });
+        localStorage.setItem('userDo', 'Im');
         setActive(!active);
         values.channelName = '';
         notify();

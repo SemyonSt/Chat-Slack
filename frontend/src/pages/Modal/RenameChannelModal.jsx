@@ -14,7 +14,9 @@ import { toast } from 'react-toastify';
 
 const socket = io();
 
-const RenameChannelModal = ({ active, setActive, channelId }) => {
+const RenameChannelModal = ({
+  active, setActive, channelId, channelToRename,
+}) => {
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channelReduser.channels);
   const channelNames = channels.map((i) => i.name);
@@ -27,12 +29,13 @@ const RenameChannelModal = ({ active, setActive, channelId }) => {
       .required(t('error.required'))
       .notOneOf(channelNames, t('error.uniq')),
   });
+  // console.log('1234', channelToRename);
 
   const {
     values, errors, handleChange, handleSubmit,
   } = useFormik({
     initialValues: {
-      channelName: '',
+      channelName: channelToRename,
     },
     validationSchema: schema,
     validateOnChange: false,
@@ -40,7 +43,7 @@ const RenameChannelModal = ({ active, setActive, channelId }) => {
     onSubmit: () => {
       socket.emit('renameChannel', { id: channelId, name: values.channelName });
       setActive(!active);
-      values.channelName = '';
+      // values.channelName = '';
       notify();
     },
   });

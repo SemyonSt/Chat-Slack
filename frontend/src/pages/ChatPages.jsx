@@ -22,6 +22,7 @@ const ChatPages = () => {
       const response = await axios.get(routes.getData(), { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo')).token}` } });
       dispatch(channelsActions.setChannels(response.data.channels));
       dispatch(messageActions.setMessages(response.data.messages));
+      // console.log(response.data);
     };
     fetchData();
   }, [dispatch]);
