@@ -10,9 +10,15 @@ import cn from 'classnames';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
+
+import {
+  Button, Form,
+} from 'react-bootstrap';
+
 import Login from '../images/login.jpeg';
 import routes from '../routes';
 import AuthContext from '../context/AuthContext';
+
 
 
 
@@ -109,9 +115,10 @@ const Logopages = () => {
                 />
               </div>
               <form onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
+              <Form.Group>
                 <h1 className="text-center mb-4">{t('loginPages.entrance')}</h1>
                 <div className="form-floating mb-3">
-                  <input
+                  <Form.Control
                     ref={usernameRef}
                     onKeyDown={(event) => handleKeyDown(event, passwordRef)}
                     name="username"
@@ -130,7 +137,7 @@ const Logopages = () => {
                   </label>
                 </div>
                 <div className="form-floating mb-4">
-                  <input
+                  <Form.Control
                     ref={passwordRef}
                     onKeyDown={(event) => handleKeyDown(event, btnRef)}
                     name="password"
@@ -151,14 +158,15 @@ const Logopages = () => {
                     {t('loginPages.password')}
                   </label>
                 </div>
-                <button
+                <Button
                   disabled={isLoading}
                   ref={btnRef}
                   type="button"
-                  className="w-100 mb-3 btn btn-outline-primary"
+                  className="w-100 mb-3 btn btn-primary"
                   onClick={handleSubmit}
                 >{t('loginPages.entrance')}
-                </button>
+                </Button>
+              </Form.Group>
               </form>
             </div>
             <div className="card-footer p-4">
