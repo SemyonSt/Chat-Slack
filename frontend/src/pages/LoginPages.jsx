@@ -161,7 +161,7 @@ const Logopages = () => {
                 <Button
                   disabled={isLoading}
                   ref={btnRef}
-                  type="button"
+                  type="submit"
                   className="w-100 mb-3 btn btn-primary"
                   onClick={handleSubmit}
                 >{t('loginPages.entrance')}
