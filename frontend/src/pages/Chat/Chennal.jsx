@@ -11,26 +11,31 @@ import { useTranslation } from 'react-i18next';
 import { actions as channelsActions } from '../../slices/chanalSlice';
 import slice from '../../slices/index';
 
-import AddChannelModal from '../Modal/AddChannel';
-import DeleteChannelModal from '../Modal/DeleteChannelModal';
-import RenameChannelModal from '../Modal/RenameChannelModal';
-
+import getModal from '../Modal/index';
 
 
 const socket = io();
 socket.on('newChannel', (payload) => {
   slice.dispatch(channelsActions.addChannel(payload));
-  // slice.dispatch(channelsActions.setChannelId(payload.id));
 });
 
 socket.on('removeChannel', (payload) => {
   slice.dispatch(channelsActions.removeChannel(payload));
-  // slice.dispatch(channelsActions.setChannelId(1));
 });
 
 socket.on('renameChannel', (payload) => {
   slice.dispatch(channelsActions.renameChannel(payload));
 });
+
+const renderModal = ({ modalInfo, hideModal }) => {
+  if (!modalInfo.type) {
+    return null;
+  }
+  // console.log(modalInfo);
+
+  const Component = getModal(modalInfo.type);
+  return <Component modalInfo={modalInfo} onHide={hideModal} />;
+};
 
 
 const Chennal = () => {
@@ -41,19 +46,13 @@ const Chennal = () => {
   const channels = useSelector((state) => state.channelReduser.channels);
   const activeChannelId = useSelector((state) => state.channelReduser.channelId);
 
-  // console.log(channels);
-
-  const [addModalActive, setAddModalActive] = useState(false);
-  const [deleteModalActive1, setDeleteModalActive1] = useState(false);
-  const [renameModalActive, setRenameModalActive] = useState(false);
-
-  const [channelId, setChannelId] = useState(null);
-  // console.log(activeChannelId);
+  const [modalInfo, setModalInfo] = useState({ type: null, item: null });
+  const hideModal = () => setModalInfo({ type: null, item: null });
+  const showModal = (type, item = null) => setModalInfo({ type, item });
 
   const getChannelId = (id) => {
     dispatch(channelsActions.setChannelId(id));
   };
-  const channelToRename = channels.find((channel) => channel.id === channelId);
 
   const ChannelDisplay = channels.map((channel) => {
     const { name, id, removable } = channel;
@@ -92,8 +91,8 @@ const Chennal = () => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1" onClick={() => { setDeleteModalActive1(true); setChannelId(id); }}>{t('interface.delete')}</Dropdown.Item>
-            <Dropdown.Item href="#/action-2" onClick={() => { setRenameModalActive(true); setChannelId(id); }}>{t('interface.rename')}</Dropdown.Item>
+            <Dropdown.Item href="#/action-1" onClick={() => showModal('delete', id)}>{t('interface.delete')}</Dropdown.Item>
+            <Dropdown.Item href="#/action-2" onClick={() => showModal('rename', id)}>{t('interface.rename')}</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
 
@@ -102,6 +101,8 @@ const Chennal = () => {
     ));
   });
 
+
+
   return (
     <>
       <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
@@ -109,7 +110,7 @@ const Chennal = () => {
           <button
             type="button"
             className="p-0 text-primary btn btn-group-vertical"
-            onClick={() => setAddModalActive(true)}
+            onClick={() => showModal('add')}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -132,21 +133,8 @@ const Chennal = () => {
           {ChannelDisplay}
         </ul>
       </div>
-      <AddChannelModal active={addModalActive} setActive={setAddModalActive} />
-      <DeleteChannelModal
-        active={deleteModalActive1}
-        setActive={setDeleteModalActive1}
-        channelId={channelId}
-      />
-      <RenameChannelModal
-        active={renameModalActive}
-        setActive={setRenameModalActive}
-        channelId={channelId}
-        channelToRename={channelToRename ? channelToRename.name : ''}
-      />
+      {renderModal({ modalInfo, hideModal })}
     </>
-
-
   );
 };
 

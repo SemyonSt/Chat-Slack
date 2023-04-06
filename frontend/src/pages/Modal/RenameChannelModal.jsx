@@ -14,10 +14,10 @@ import { toast } from 'react-toastify';
 
 const socket = io();
 
-const RenameChannelModal = ({
-  active, setActive, channelId, channelToRename,
-}) => {
+const RenameChannelModal = (props) => {
   const { t } = useTranslation();
+  const { onHide, modalInfo } = props;
+  const channelId = modalInfo.item;
   const channels = useSelector((state) => state.channelReduser.channels);
   const channelNames = channels.map((i) => i.name);
   const notify = () => toast.success(t('notify.rename'));
@@ -29,21 +29,20 @@ const RenameChannelModal = ({
       .required(t('error.required'))
       .notOneOf(channelNames, t('error.uniq')),
   });
-  // console.log('1234', channelToRename);
 
+  const channelToRename = channels.find((i) => i.id === channelId);
   const {
     values, errors, handleChange, handleSubmit,
   } = useFormik({
     initialValues: {
-      channelName: channelToRename,
+      channelName: channelToRename ? channelToRename.name : '',
     },
     validationSchema: schema,
     validateOnChange: false,
     errorToken: false,
     onSubmit: () => {
       socket.emit('renameChannel', { id: channelId, name: values.channelName });
-      setActive(!active);
-      // values.channelName = '';
+      onHide();
       notify();
     },
   });
@@ -53,18 +52,15 @@ const RenameChannelModal = ({
   });
 
 
-  const inputRef = useRef(null);
-
+  const inputRef = useRef();
   useEffect(() => {
-    // eslint-disable-next-line functional/no-conditional-statements
-    if (inputRef.current !== null) {
-      inputRef.current.focus();
-    }
+    console.log('IM rename!!!');
+    inputRef.current.focus();
   }, []);
 
   return (
-    <Modal show={active} centered>
-      <Modal.Header closeButton onClick={() => setActive(false)}>
+    <Modal show centered>
+      <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>{t('interface.renameChannel')}</Modal.Title>
       </Modal.Header>
 

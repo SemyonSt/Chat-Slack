@@ -8,18 +8,21 @@ import { toast } from 'react-toastify';
 
 const socket = io();
 
-const DeleteChannelModal = ({ active, setActive, channelId }) => {
+const DeleteChannelModal = (props) => {
+  const { onHide, modalInfo } = props;
+  const channelId = modalInfo.item;
   const { t } = useTranslation();
   const notify = () => toast.success(t('notify.delete'));
   const submit = () => {
     socket.emit('removeChannel', { id: channelId });
-    setActive(false);
+    // setActive(false);
+    onHide();
     notify();
   };
 
   return (
-    <Modal show={active} centered>
-      <Modal.Header closeButton onClick={() => setActive(false)}>
+    <Modal show centered>
+      <Modal.Header closeButton onHide={onHide}>
         <Modal.Title className="modal-title h4">{t('interface.deleteChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>

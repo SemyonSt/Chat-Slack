@@ -15,7 +15,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const socket = io();
 
-const AddChannelModal = ({ active, setActive }) => {
+const AddChannelModal = (props) => {
+  const { onHide } = props;
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channelReduser.channels);
   const channelNames = channels.map((i) => i.name);
@@ -42,9 +43,10 @@ const AddChannelModal = ({ active, setActive }) => {
       try {
         socket.emit('newChannel', { name: values.channelName });
         localStorage.setItem('userDo', 'Im');
-        setActive(!active);
+        // setActive(!active);
         values.channelName = '';
         notify();
+        onHide();
       } catch (error) {
         console.log('ERRROROROOR!!!!!!!!!!!', error);
       }
@@ -55,18 +57,14 @@ const AddChannelModal = ({ active, setActive }) => {
     'mb-10 form-control is-invalid': errors.channelName,
   });
 
-  const inputRef = useRef(null);
-
+  const inputRef = useRef();
   useEffect(() => {
-    // eslint-disable-next-line functional/no-conditional-statements
-    if (inputRef.current !== null) {
-      inputRef.current.focus();
-    }
+    inputRef.current.focus();
   }, []);
 
   return (
-    <Modal show={active} centered className="modal-form">
-      <Modal.Header closeButton onClick={() => setActive(false)}>
+    <Modal show centered className="modal-form">
+      <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>{t('interface.addChannel')}</Modal.Title>
       </Modal.Header>
 
@@ -85,7 +83,7 @@ const AddChannelModal = ({ active, setActive }) => {
           </Modal.Footer>
         </Form.Group>
         <FormGroup className="d-flex justify-content-end mt-3">
-          <Button className="me-2 btn-secondary" variant="secondary" onClick={() => setActive(false)}>{t('interface.cancel')}</Button>
+          <Button className="me-2 btn-secondary" variant="secondary" onClick={() => onHide()}>{t('interface.cancel')}</Button>
           <Button className="btn-primary" variant="primary" type="submit">{t('interface.submit')}</Button>
         </FormGroup>
       </form>
