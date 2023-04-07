@@ -12,6 +12,8 @@ export default {
       enterMessage: 'Enter your message...',
       bntExit: 'Sign Out',
       rename: 'Rename',
+      channelName: 'Channel name',
+      channelManagement: 'Channel management',
     },
     loginPages: {
       entrance: 'To come in',

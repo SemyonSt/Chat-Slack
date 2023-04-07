@@ -13,6 +13,7 @@ export default {
       bntExit: 'Выйти',
       rename: 'Переименовать',
       channelName: 'Имя канала',
+      channelManagement: 'Управление каналом',
     },
     loginPages: {
       entrance: 'Войти',

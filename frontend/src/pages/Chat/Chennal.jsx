@@ -87,7 +87,7 @@ const Chennal = () => {
             variant={id === activeChannelId ? 'flex-grow-0 dropdown-toggle dropdown-toggle-split btn btn-secondary' : 'flex-grow-0 dropdown-toggle dropdown-toggle-split btn'}
             id="react-aria9457689434-1"
           >
-            <span className="visually-hidden">Управление каналом</span>
+            <span className="visually-hidden">{t('interface.channelManagement')}</span>
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
