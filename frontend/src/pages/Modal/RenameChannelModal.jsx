@@ -83,7 +83,7 @@ const RenameChannelModal = (props) => {
           </Modal.Footer>
         </Form.Group>
         <FormGroup className="d-flex justify-content-end m-3">
-          <Button className="me-2 btn-secondary" variant="secondary" onClick={() => setActive(false)}>{t('interface.cancel')}</Button>
+          <Button className="me-2 btn-secondary" variant="secondary" onClick={() => onHide()}>{t('interface.cancel')}</Button>
           <Button className="btn-primary" variant="primary" type="submit">{t('interface.submit')}</Button>
         </FormGroup>
       </form>
