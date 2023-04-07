@@ -27,7 +27,8 @@ const AddChannelModal = (props) => {
       .min(3, t('error.minMaxSymbols'))
       .max(20, t('error.minMaxSymbols'))
       .required(t('error.required'))
-      .notOneOf(channelNames, t('error.uniq')),
+      .notOneOf(channelNames, t('error.uniq'))
+      .trim(t('error.required')),
   });
 
   const {
