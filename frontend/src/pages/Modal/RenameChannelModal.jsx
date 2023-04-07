@@ -56,7 +56,7 @@ const RenameChannelModal = (props) => {
   const inputRef = useRef();
   useEffect(() => {
     setTimeout(() => {
-      inputRef.current.focus();
+      // inputRef.current.focus();
       inputRef.current.select();
     }, 1);
   }, []);
