@@ -54,8 +54,9 @@ const RenameChannelModal = (props) => {
 
   const inputRef = useRef();
   useEffect(() => {
-    console.log('IM rename!!!');
-    inputRef.current.focus();
+    setTimeout(() => {
+      inputRef.current.focus();
+    }, 10);
   }, []);
 
   return (
@@ -78,7 +79,7 @@ const RenameChannelModal = (props) => {
             <div className="invalid-feedback">{errors.channelName}</div>
           </Modal.Footer>
         </Form.Group>
-        <FormGroup className="d-flex justify-content-end">
+        <FormGroup className="d-flex justify-content-end m-3">
           <Button className="me-2 btn-secondary" variant="secondary" onClick={() => setActive(false)}>{t('interface.cancel')}</Button>
           <Button className="btn-primary" variant="primary" type="submit">{t('interface.submit')}</Button>
         </FormGroup>
