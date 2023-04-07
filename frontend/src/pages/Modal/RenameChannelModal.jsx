@@ -76,6 +76,7 @@ const RenameChannelModal = (props) => {
               value={values.channelName}
               onChange={handleChange}
             />
+            <Form.Label className="visually-hidden" htmlFor="newChannelName">{t('interface.channelName')}</Form.Label>
             <div className="invalid-feedback">{errors.channelName}</div>
           </Modal.Footer>
         </Form.Group>

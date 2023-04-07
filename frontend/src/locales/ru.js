@@ -12,6 +12,7 @@ export default {
       enterMessage: 'Введите сообщение...',
       bntExit: 'Выйти',
       rename: 'Переименовать',
+      channelName: 'Имя канала',
     },
     loginPages: {
       entrance: 'Войти',
