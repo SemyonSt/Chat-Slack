@@ -72,8 +72,8 @@ const RenameChannelModal = (props) => {
           <Modal.Footer>
             <Form.Control
               ref={inputRef}
-              name="channelName"
-              id="channelName"
+              name="newChannelName"
+              id="newChannelName"
               className={errClass}
               value={values.channelName}
               onChange={handleChange}

@@ -76,13 +76,13 @@ const AddChannelModal = (props) => {
           <Modal.Footer>
             <Form.Control
               ref={inputRef}
-              name="newChannelName"
-              id="newChannelName"
+              name=""
+              id="channelName"
               className={errClass}
               value={values.channelName}
               onChange={handleChange}
             />
-            <Form.Label className="visually-hidden" htmlFor="newChannelName">{t('interface.channelName')}</Form.Label>
+            <Form.Label className="visually-hidden" htmlFor="channelName">{t('interface.channelName')}</Form.Label>
             <div className="invalid-feedback">{errors.channelName}</div>
           </Modal.Footer>
         </Form.Group>
