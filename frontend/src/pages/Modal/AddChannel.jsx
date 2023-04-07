@@ -61,7 +61,7 @@ const AddChannelModal = (props) => {
   useEffect(() => {
     setTimeout(() => {
       inputRef.current.focus();
-    }, 10);
+    }, 1);
   }, []);
 
   return (
