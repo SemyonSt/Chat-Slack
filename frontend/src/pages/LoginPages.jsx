@@ -29,6 +29,7 @@ const Logopages = () => {
   const notify = () => toast.error('Ошибка сети');
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   // console.log(isLoading);
 
   const schema = yup.object().shape({
@@ -85,7 +86,8 @@ const Logopages = () => {
           if (err.response.status === 401) {
             // usernameRef.current.focus();
             console.log('ERROOR');
-            errors.username = t('error.invalidNameOrPass');
+            // errors.username = t('error.invalidNameOrPass');
+            setError(t('error.invalidNameOrPass'));
             return setSubmitting(false);
           }
           return setSubmitting(false);
@@ -100,7 +102,7 @@ const Logopages = () => {
   });
 
   const errClass = cn('form-control', {
-    'form-control is-invalid': (errors.password) || (errors.username),
+    'form-control is-invalid': (errors.password) || (errors.username) || error,
   });
 
   return (
@@ -152,7 +154,7 @@ const Logopages = () => {
                       value={values.password}
                       className={errClass}
                     />
-                    <div className="invalid-tooltip">{ errors.username}</div>
+                    <div className="invalid-tooltip">{error}</div>
                     <label
                       className="form-label"
                       htmlFor="password"
