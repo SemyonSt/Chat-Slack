@@ -46,7 +46,7 @@ export default {
       messagesCount_many: ' сообщений',
     },
     notify: {
-      delete: 'Канал удален',
+      delete: 'Канал удалён',
       rename: 'Канал переименован',
       create: 'Канал создан!',
     },
