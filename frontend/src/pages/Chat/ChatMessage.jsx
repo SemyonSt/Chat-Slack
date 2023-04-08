@@ -68,12 +68,10 @@ const ChatMessage = () => {
 
   // окончание "сообщения(ий/ие)"
   const numberOfMessages = (numberArg) => {
-    let number = numberArg;
-    number %= 100;
+    const number = numberArg % 100;
     if (number >= 5 && number <= 20) {
       return t('messagesCounter.messagesCount_zero');
     }
-    number %= 10;
     if (number === 1) {
       return t('messagesCounter.messagesCount_one');
     }
