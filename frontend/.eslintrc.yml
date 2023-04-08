@@ -36,10 +36,5 @@ rules:
   testing-library/no-debug: 0
   react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
   functional/no-expression-statements: 0
-  no-undef: 0
-  no-multiple-empty-lines: 0
-  react/jsx-indent: 0
-  react/jsx-one-expression-per-line: 0
-  jsx-a11y/label-has-associated-control: 0
   no-param-reassign: 0
   

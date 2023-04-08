@@ -5,7 +5,6 @@ export default {
   creatNewUser: () => ['api', 'v1', 'signup'].join('/'),
 };
 
-
 // const host = 'http://localhost:8080'; // for local tests
 // export default {
 //   tasksPath: () => [host, 'tasks'].join('/'),
