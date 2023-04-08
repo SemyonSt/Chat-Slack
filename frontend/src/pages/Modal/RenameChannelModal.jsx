@@ -52,7 +52,6 @@ const RenameChannelModal = (props) => {
     'mb-2 form-control is-invalid': errors.channelName,
   });
 
-
   const inputRef = useRef();
   useEffect(() => {
     setTimeout(() => {

@@ -9,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 import Registration from '../images/registrate.jpg';
 
-
 const Registratepages = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -47,7 +46,6 @@ const Registratepages = () => {
       return ref.current.focus();
     }
   };
-
 
   const {
     values, errors, touched, handleBlur, setSubmitting, handleChange, handleSubmit,
@@ -119,7 +117,8 @@ const Registratepages = () => {
                   <label
                     className="form-label"
                     htmlFor="username"
-                  >{t('regisrtatePages.username')}
+                  >
+                    {t('regisrtatePages.username')}
                   </label>
                   <div className="invalid-tooltip">{errors.username}</div>
                 </div>
@@ -167,7 +166,8 @@ const Registratepages = () => {
                   <label
                     className="form-label"
                     htmlFor="confirmPassword"
-                  >{t('regisrtatePages.confirmPassword')}
+                  >
+                    {t('regisrtatePages.confirmPassword')}
                   </label>
                 </div>
                 <button
@@ -189,5 +189,3 @@ const Registratepages = () => {
 };
 
 export default Registratepages;
-
-

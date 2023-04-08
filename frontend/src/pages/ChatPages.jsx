@@ -16,7 +16,6 @@ const ChatPages = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(routes.getData(), { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo')).token}` } });
@@ -28,7 +27,6 @@ const ChatPages = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    // eslint-disable-next-line functional/no-conditional-statements
     if (!localStorage.getItem('userInfo')) {
       navigate('/login');
     }

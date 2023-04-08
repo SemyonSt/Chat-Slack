@@ -18,7 +18,6 @@ import AuthContext from './context/AuthContext';
 import store from './slices/index';
 import resources from './locales/index';
 
-
 const rollbarConfig = {
   accessToken: 'e4529ece2f6d496e8e58ff3c0243ff6b',
   environment: 'testenv',
@@ -46,7 +45,6 @@ i18next
 const changeLanguage = (lng) => {
   i18next.changeLanguage(lng);
 };
-
 
 const App = () => {
   const { t } = useTranslation();

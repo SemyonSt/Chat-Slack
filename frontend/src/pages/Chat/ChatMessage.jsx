@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import filterWords from 'leo-profanity';
 import { actions as messageActions } from '../../slices/messageSlice';
 
-
 import slice from '../../slices/index';
 
 const socket = io();
@@ -56,12 +55,20 @@ const ChatMessage = () => {
   const outputMessage = chennaMessage.map((mes) => {
     const { body, username, id } = mes;
     return (
-      <div className="text-break mb-2" key={id}><b>{username}</b>: {filterWords.clean(body)}</div>
+      <div className="text-break mb-2" key={id}>
+        <b>
+          {username}
+        </b>
+        :
+        {' '}
+        {filterWords.clean(body)}
+      </div>
     );
   });
 
   // окончание "сообщения(ий/ие)"
-  const numberOfMessages = (number) => {
+  const numberOfMessages = (numberArg) => {
+    let number = numberArg;
     number %= 100;
     if (number >= 5 && number <= 20) {
       return t('messagesCounter.messagesCount_zero');
@@ -76,7 +83,6 @@ const ChatMessage = () => {
     return t('messagesCounter.messagesCount_many');
   };
 
-
   // перемотка скрола на новое сообщение
   const messagesBoxRef = useRef(null);
 
@@ -90,12 +96,19 @@ const ChatMessage = () => {
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b># {ActivChannelName(channels)} </b>
+            <b>
+              #
+              {' '}
+              {ActivChannelName(channels)}
+              {' '}
+            </b>
           </p>
           <span
             className="text-muted"
           >
-            {chennaMessage.length} {numberOfMessages((chennaMessage.length))}
+            {chennaMessage.length}
+            {' '}
+            {numberOfMessages((chennaMessage.length))}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5 " ref={messagesBoxRef}>
@@ -141,5 +154,3 @@ const ChatMessage = () => {
 };
 
 export default ChatMessage;
-
-

@@ -13,7 +13,6 @@ import slice from '../../slices/index';
 
 import getModal from '../Modal/index';
 
-
 const socket = io();
 socket.on('newChannel', (payload) => {
   slice.dispatch(channelsActions.addChannel(payload));
@@ -36,7 +35,6 @@ const renderModal = ({ modalInfo, hideModal }) => {
   const Component = getModal(modalInfo.type);
   return <Component modalInfo={modalInfo} onHide={hideModal} />;
 };
-
 
 const Chennal = () => {
   filterWords.loadDictionary('ru');
@@ -65,8 +63,10 @@ const Chennal = () => {
         >
           <span
             className="me-1"
-          >#
-          </span>{name}
+          >
+            #
+          </span>
+          {name}
         </button>
       </li>
     ) : (
@@ -80,7 +80,8 @@ const Chennal = () => {
             id="dropdown-split-basic"
             className="w-50"
           >
-            <span className="me-1">#</span>{filterWords.clean(name)}
+            <span className="me-1">#</span>
+            {filterWords.clean(name)}
           </Button>
 
           <Dropdown.Toggle
@@ -101,12 +102,11 @@ const Chennal = () => {
     ));
   });
 
-
-
   return (
     <>
       <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-        <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4"><span>{t('interface.channels')}</span>
+        <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
+          <span>{t('interface.channels')}</span>
           <button
             type="button"
             className="p-0 text-primary btn btn-group-vertical"
@@ -139,5 +139,3 @@ const Chennal = () => {
 };
 
 export default Chennal;
-
-

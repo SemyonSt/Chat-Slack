@@ -29,7 +29,7 @@ const DeleteChannelModal = (props) => {
         <p className="lead">{t('interface.sure')}</p>
       </Modal.Body>
       <FormGroup className="d-flex justify-content-end m-3">
-        <Button className="me-2 btn-secondary" variant="secondary" onClick={() => setActive(false)}>{t('interface.cancel')}</Button>
+        <Button className="me-2 btn-secondary" variant="secondary" onClick={() => onHide()}>{t('interface.cancel')}</Button>
         <Button className="btn-primary" variant="danger" type="submit" onClick={() => submit()}>{t('interface.delete')}</Button>
       </FormGroup>
     </Modal>

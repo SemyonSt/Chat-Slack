@@ -19,10 +19,6 @@ import Login from '../images/login.jpeg';
 import routes from '../routes';
 import AuthContext from '../context/AuthContext';
 
-
-
-
-
 const Logopages = () => {
   const navigate = useNavigate();
   const { setToken } = useContext(AuthContext);
@@ -56,7 +52,6 @@ const Logopages = () => {
       return ref.current.focus();
     }
   };
-
 
   const {
     values, errors, setSubmitting, handleChange, handleSubmit,
@@ -168,13 +163,18 @@ const Logopages = () => {
                     type="submit"
                     className="w-100 mb-3 btn btn-primary"
                     onClick={() => usernameRef.current.focus()}
-                  >{t('loginPages.entrance')}
+                  >
+                    {t('loginPages.entrance')}
                   </Button>
                 </Form.Group>
               </form>
             </div>
             <div className="card-footer p-4">
-              <div className="text-center"><span>{t('loginPages.noAccount')} </span>
+              <div className="text-center">
+                <span>
+                  {t('loginPages.noAccount')}
+                  {' '}
+                </span>
                 <a href="/signup">{t('loginPages.registration')}</a>
               </div>
             </div>
