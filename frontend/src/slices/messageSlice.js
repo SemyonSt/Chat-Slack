@@ -1,3 +1,5 @@
+/* eslint-disable functional/no-expression-statements */
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { actions as channelsActions } from './chanalSlice';
 

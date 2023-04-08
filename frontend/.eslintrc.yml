@@ -21,7 +21,6 @@ plugins:
 rules:
   import/extensions: 0
   import/no-unresolved: 0
-  import/no-extraneous-dependencies: 0
   react/prop-types: 0
   no-console: 0
   react/react-in-jsx-scope: 0
@@ -35,6 +34,4 @@ rules:
   react/function-component-definition: [2, { "namedComponents": "arrow-function" }]
   testing-library/no-debug: 0
   react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
-  functional/no-expression-statements: 0
-  no-param-reassign: 0
   
