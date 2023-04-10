@@ -16,7 +16,7 @@
 ---
 
 ```
-$ https://github.com/M4XPRD/frontend-project-12
+$ git clone git@github.com:SemyonSt/frontend-project-12.git
 
 $ make install
 
