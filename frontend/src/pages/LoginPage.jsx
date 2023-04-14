@@ -1,11 +1,11 @@
 import React, {
-  useContext, useRef, useEffect, useState,
+  useRef, useEffect, useState,
 } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
 // import { Redirect } from 'react-router';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,11 +17,11 @@ import {
 
 import Login from '../images/login.jpeg';
 import routes from '../routes';
-import AuthContext from '../context/AuthContext';
+import useAuth from '../hooks/authHooks';
 
 const Logopages = () => {
-  const navigate = useNavigate();
-  const { setToken } = useContext(AuthContext);
+  // const navigate = useNavigate();
+  const auth = useAuth();
   const notify = () => toast.error('Ошибка сети');
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
@@ -53,6 +53,8 @@ const Logopages = () => {
     }
   };
 
+  // const useAuth = () => useContext(authContext);
+
   const {
     values, errors, setSubmitting, handleChange, handleSubmit,
   } = useFormik({
@@ -67,11 +69,7 @@ const Logopages = () => {
       setIsLoading(true);
       axios.post(routes.login(), { username: values.username, password: values.password })
         .then((response) => {
-          const data = JSON.stringify(response.data);
-          localStorage.clear();
-          localStorage.setItem('userInfo', data);
-          navigate('/');
-          setToken(response.data);
+          auth.logIn(response);
           console.log('TRUUUEEEE');
         })
         .catch((err) => {

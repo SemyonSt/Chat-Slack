@@ -1,5 +1,5 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import React, { useState, useMemo, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import i18next from 'i18next';
 import { initReactI18next, useTranslation } from 'react-i18next';
@@ -13,26 +13,15 @@ import ErrorPages from './pages/ErrorPage';
 import LoginPages from './pages/LoginPage';
 import RegisrtatPages from './pages/RegisrtatPage';
 import ChatPages from './pages/ChatPage';
-import routes from './routes';
 
-import AuthContext from './context/AuthContext';
+import useAuth from './hooks/authHooks';
+import AuthProvider from './context/AuthProvider';
 import store from './slices/index';
 import resources from './locales/index';
 
 const rollbarConfig = {
   accessToken: 'e4529ece2f6d496e8e58ff3c0243ff6b',
   environment: 'testenv',
-};
-
-const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState('');
-  const contextValue = useMemo(() => ({ token, setToken }), [token, setToken]);
-
-  return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
-  );
 };
 
 i18next
@@ -49,17 +38,19 @@ const changeLanguage = (lng) => {
 
 const App = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [language, setLanguge] = useState(localStorage.getItem('language') || 'Русский');
+
+  const auth = useAuth();
 
   useEffect(() => {
     localStorage.setItem('language', language);
   });
 
-  const logOut = () => {
-    localStorage.removeItem('userInfo');
-    navigate(routes.logOut);
-  };
+  // const logOut = () => {
+  //   localStorage.removeItem('userInfo');
+  //   navigate(routes.logOut);
+  // };
 
   return (
 
@@ -72,7 +63,7 @@ const App = () => {
                 <div className="d-flex flex-column h-100">
                   <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                     <div className="container"><a className="navbar-brand" href="/">Hexlet Chat</a></div>
-                    {localStorage.getItem('userInfo') ? <Button onClick={() => logOut()} type="button" className="btn btn-primary">{t('interface.bntExit')}</Button> : null}
+                    {localStorage.getItem('userInfo') ? <Button onClick={() => auth.logOut()} type="button" className="btn btn-primary">{t('interface.bntExit')}</Button> : null}
                     <div>
                       <DropdownButton
                         id="dropdown-basic-button"

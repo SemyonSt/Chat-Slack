@@ -1,17 +1,18 @@
 import * as yup from 'yup';
 
 import React, { useRef, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 import Registration from '../images/registrate.jpg';
+import useAuth from '../hooks/authHooks';
 
 const Registratepages = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const notify = () => toast.error(t('error.networkError'));
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,6 +47,7 @@ const Registratepages = () => {
       return ref.current.focus();
     }
   };
+  const auth = useAuth();
 
   const {
     values, errors, touched, handleBlur, setSubmitting, handleChange, handleSubmit,
@@ -60,10 +62,7 @@ const Registratepages = () => {
     onSubmit: (values) => {
       axios.post('/api/v1/signup', { username: values.username, password: values.password })
         .then((response) => {
-          const data = JSON.stringify(response.data);
-          localStorage.clear();
-          localStorage.setItem('userInfo', data);
-          navigate('/');
+          auth.logIn(response);
         })
         .catch((err) => {
           if (err.message === 'Network Error') {
