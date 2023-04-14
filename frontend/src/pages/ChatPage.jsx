@@ -7,7 +7,7 @@ import axios from 'axios';
 import routes from '../routes';
 
 import ChatMessage from './Chat/ChatMessage';
-import Chennal from './Chat/Chennal';
+import Chennal from './Chat/Channel';
 
 import { actions as channelsActions } from '../slices/channelsSlice';
 import { actions as messageActions } from '../slices/messageSlice';
@@ -27,6 +27,7 @@ const ChatPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    // console.log('STORAGE!!!!', localStorage);
     if (!localStorage.getItem('userInfo')) {
       navigate('/login');
     }

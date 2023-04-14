@@ -63,6 +63,7 @@ const Registratepages = () => {
       axios.post('/api/v1/signup', { username: values.username, password: values.password })
         .then((response) => {
           auth.logIn(response);
+          console.log('TRUUUEEEE', auth);
         })
         .catch((err) => {
           if (err.message === 'Network Error') {

@@ -8,12 +8,15 @@ import React, { useRef, useEffect } from 'react';
 import {
   Modal, Button, Form, FormGroup,
 } from 'react-bootstrap';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const socket = io();
+import useAuth from '../../hooks/authHooks';
+import useSocket from '../../hooks/socketHook';
+
+// const socket = io();
 
 const AddChannelModal = (props) => {
   const { onHide } = props;
@@ -21,6 +24,9 @@ const AddChannelModal = (props) => {
   const channels = useSelector((state) => state.channelReducer.channels);
   const channelNames = channels.map((i) => i.name);
   const notify = () => toast.success(t('notify.create'));
+
+  const auth = useAuth();
+  const socket = useSocket();
 
   const schema = yup.object().shape({
     channelName: yup.string()
@@ -42,8 +48,9 @@ const AddChannelModal = (props) => {
     errorToken: false,
     onSubmit: () => {
       try {
-        socket.emit('newChannel', { name: values.channelName });
-        localStorage.setItem('userDo', 'Im');
+        // socket.emit('newChannel', { name: values.channelName });
+        socket.addChannel(values);
+        auth.iAddedChannel();
         // setActive(!active);
         values.channelName = '';
         notify();

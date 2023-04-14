@@ -6,7 +6,8 @@ import AuthContext from './AuthContext';
 import routes from '../routes';
 
 const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState('');
+  const initialState = JSON.parse(localStorage.getItem('userInfo'));
+  const [token, setToken] = useState(initialState ?? null);
 
   const navigate = useNavigate();
 
@@ -14,8 +15,8 @@ const AuthProvider = ({ children }) => {
     const data = JSON.stringify(response.data);
     localStorage.clear();
     localStorage.setItem('userInfo', data);
+    setToken(data);
     navigate('/');
-    setToken(response.data);
   }, [navigate]);
 
   const logOut = useCallback(() => {
@@ -23,12 +24,17 @@ const AuthProvider = ({ children }) => {
     navigate(routes.logOut);
   }, [navigate]);
 
+  const iAddedChannel = useCallback(() => {
+    localStorage.setItem('userDo', 'Im');
+  }, []);
+
   const contextValue = useMemo(() => ({
     token,
     setToken,
     logOut,
     logIn,
-  }), [token, setToken, logOut, logIn]);
+    iAddedChannel,
+  }), [token, setToken, logOut, logIn, iAddedChannel]);
   return (
     <AuthContext.Provider value={contextValue}>
       {children}

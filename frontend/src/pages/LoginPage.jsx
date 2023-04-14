@@ -70,7 +70,7 @@ const Logopages = () => {
       axios.post(routes.login(), { username: values.username, password: values.password })
         .then((response) => {
           auth.logIn(response);
-          console.log('TRUUUEEEE');
+          console.log('TRUUUEEEE', auth.token);
         })
         .catch((err) => {
           if (err.message === 'Network Error') {

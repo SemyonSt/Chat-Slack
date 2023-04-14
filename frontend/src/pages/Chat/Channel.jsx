@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { io } from 'socket.io-client';
 
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -9,32 +8,21 @@ import filterWords from 'leo-profanity';
 
 import { useTranslation } from 'react-i18next';
 import { actions as channelsActions } from '../../slices/channelsSlice';
-import slice from '../../slices/index';
 
-import getModal from '../Modal/index';
+import Modal from '../Modal';
+// import slice from '../../slices/index';
 
-const socket = io();
-socket.on('newChannel', (payload) => {
-  slice.dispatch(channelsActions.addChannel(payload));
-});
+// import getModal from '../Modal/index';
 
-socket.on('removeChannel', (payload) => {
-  slice.dispatch(channelsActions.removeChannel(payload));
-});
+// const renderModal = ({ modalInfo, hideModal }) => {
+//   if (!modalInfo.type) {
+//     return null;
+//   }
+//   // console.log(modalInfo);
 
-socket.on('renameChannel', (payload) => {
-  slice.dispatch(channelsActions.renameChannel(payload));
-});
-
-const renderModal = ({ modalInfo, hideModal }) => {
-  if (!modalInfo.type) {
-    return null;
-  }
-  // console.log(modalInfo);
-
-  const Component = getModal(modalInfo.type);
-  return <Component modalInfo={modalInfo} onHide={hideModal} />;
-};
+//   const Component = getModal(modalInfo.type);
+//   return <Component modalInfo={modalInfo} onHide={hideModal} />;
+// };
 
 const Chennal = () => {
   filterWords.loadDictionary('ru');
@@ -133,7 +121,8 @@ const Chennal = () => {
           {ChannelDisplay}
         </ul>
       </div>
-      {renderModal({ modalInfo, hideModal })}
+      <Modal modalInfo={modalInfo} hideModal={hideModal} />
+      {/* {renderModal({ modalInfo, hideModal })} */}
     </>
   );
 };
