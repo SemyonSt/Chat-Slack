@@ -9,10 +9,10 @@ import routes from '../routes';
 import ChatMessage from './Chat/ChatMessage';
 import Chennal from './Chat/Chennal';
 
-import { actions as channelsActions } from '../slices/chanalSlice';
+import { actions as channelsActions } from '../slices/channelsSlice';
 import { actions as messageActions } from '../slices/messageSlice';
 
-const ChatPages = () => {
+const ChatPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -42,4 +42,4 @@ const ChatPages = () => {
   );
 };
 
-export default ChatPages;
+export default ChatPage;

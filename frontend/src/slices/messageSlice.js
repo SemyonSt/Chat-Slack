@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { actions as channelsActions } from './chanalSlice';
+import { actions as channelsActions } from './channelsSlice';
 
 const initialState = {
   message: [],

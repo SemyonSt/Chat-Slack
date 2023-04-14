@@ -14,6 +14,7 @@ export default {
       rename: 'Rename',
       channelName: 'Channel name',
       channelManagement: 'Channel management',
+      newMessage: 'New message',
     },
     loginPages: {
       entrance: 'To come in',

@@ -8,7 +8,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import filterWords from 'leo-profanity';
 
 import { useTranslation } from 'react-i18next';
-import { actions as channelsActions } from '../../slices/chanalSlice';
+import { actions as channelsActions } from '../../slices/channelsSlice';
 import slice from '../../slices/index';
 
 import getModal from '../Modal/index';
@@ -41,8 +41,8 @@ const Chennal = () => {
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const channels = useSelector((state) => state.channelReduser.channels);
-  const activeChannelId = useSelector((state) => state.channelReduser.channelId);
+  const channels = useSelector((state) => state.channelReducer.channels);
+  const activeChannelId = useSelector((state) => state.channelReducer.channelId);
 
   const [modalInfo, setModalInfo] = useState({ type: null, item: null });
   const hideModal = () => setModalInfo({ type: null, item: null });

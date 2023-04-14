@@ -9,10 +9,11 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
 import { Provider as RollbalProvider, ErrorBoundary } from '@rollbar/react';
-import ErrorPages from './pages/ErrorPages';
-import LoginPages from './pages/LoginPages';
-import RegisrtatPages from './pages/RegisrtatPages';
-import ChatPages from './pages/ChatPages';
+import ErrorPages from './pages/ErrorPage';
+import LoginPages from './pages/LoginPage';
+import RegisrtatPages from './pages/RegisrtatPage';
+import ChatPages from './pages/ChatPage';
+import routes from './routes';
 
 import AuthContext from './context/AuthContext';
 import store from './slices/index';
@@ -57,7 +58,7 @@ const App = () => {
 
   const logOut = () => {
     localStorage.removeItem('userInfo');
-    navigate('/login');
+    navigate(routes.logOut);
   };
 
   return (

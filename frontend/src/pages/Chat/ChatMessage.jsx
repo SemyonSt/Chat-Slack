@@ -21,8 +21,8 @@ const ChatMessage = () => {
   filterWords.add(filterWords.getDictionary('en'));
 
   const [message, setMessage] = useState('');
-  const channels = useSelector((state) => state.channelReduser.channels);
-  const channelsId = useSelector((state) => state.channelReduser.channelId);
+  const channels = useSelector((state) => state.channelReducer.channels);
+  const channelsId = useSelector((state) => state.channelReducer.channelId);
   const messages = useSelector((state) => state.messageReducer.message);
 
   // Создание фокуса на инпут сообщения
@@ -44,8 +44,8 @@ const ChatMessage = () => {
 
   // какая то фигня (отображение ID активного канала)
   const ActivChannelName = (channels1) => {
-    const filter = channels1.filter((channel) => channel.id === channelsId).map((i) => i.name);
-    return filter[0];
+    const channelData = channels1.find((channel) => channel.id === channelsId);
+    return channelData ? channelData.name : 'No channel found';
   };
 
   // фильтрация сообщений по каналам
@@ -118,7 +118,7 @@ const ChatMessage = () => {
               <Form.Control
                 ref={inputRef}
                 name="body"
-                aria-label="Новое сообщение"
+                aria-label={t('interface.newMessage')}
                 placeholder={t('interface.enterMessage')}
                 className="border-0 p-0 ps-2 form-control"
                 value={message}

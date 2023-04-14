@@ -14,6 +14,7 @@ export default {
       rename: 'Переименовать',
       channelName: 'Имя канала',
       channelManagement: 'Управление каналом',
+      newMessage: 'Новое сообщение',
     },
     loginPages: {
       entrance: 'Войти',

@@ -3,6 +3,7 @@ export default {
   login: () => ['api', 'v1', 'login'].join('/'),
   getData: () => ['api', 'v1', 'data'].join('/'),
   creatNewUser: () => ['api', 'v1', 'signup'].join('/'),
+  logOut: '/login',
 };
 
 // const host = 'http://localhost:8080'; // for local tests
