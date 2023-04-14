@@ -62,44 +62,46 @@ const App = () => {
   };
 
   return (
-    <div className="h-100">
-      <div className="h-100" id="chat">
-        <div className="d-flex flex-column h-100">
-          <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
-            <div className="container"><a className="navbar-brand" href="/">Hexlet Chat</a></div>
-            {localStorage.getItem('userInfo') ? <Button onClick={() => logOut()} type="button" className="btn btn-primary">{t('interface.bntExit')}</Button> : null}
-            <div>
-              <DropdownButton
-                id="dropdown-basic-button"
-                title={language}
-                className="btn-language"
-                variant="light"
-                style={{ marginRight: '200px' }}
-              >
-                <Dropdown.Item href="#/action-2" onClick={() => { changeLanguage('ru'); setLanguge('Русский'); }}>Русский</Dropdown.Item>
-                <Dropdown.Item href="#/action-1" onClick={() => { changeLanguage('en'); setLanguge('English'); }}>English</Dropdown.Item>
-              </DropdownButton>
-            </div>
 
-          </nav>
-          <RollbalProvider config={rollbarConfig}>
-            <ErrorBoundary>
-              <Provider store={store}>
-                <AuthProvider>
+    <RollbalProvider config={rollbarConfig}>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <AuthProvider>
+            <div className="h-100">
+              <div className="h-100" id="chat">
+                <div className="d-flex flex-column h-100">
+                  <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
+                    <div className="container"><a className="navbar-brand" href="/">Hexlet Chat</a></div>
+                    {localStorage.getItem('userInfo') ? <Button onClick={() => logOut()} type="button" className="btn btn-primary">{t('interface.bntExit')}</Button> : null}
+                    <div>
+                      <DropdownButton
+                        id="dropdown-basic-button"
+                        title={language}
+                        className="btn-language"
+                        variant="light"
+                        style={{ marginRight: '200px' }}
+                      >
+                        <Dropdown.Item href="#/action-2" onClick={() => { changeLanguage('ru'); setLanguge('Русский'); }}>Русский</Dropdown.Item>
+                        <Dropdown.Item href="#/action-1" onClick={() => { changeLanguage('en'); setLanguge('English'); }}>English</Dropdown.Item>
+                      </DropdownButton>
+                    </div>
+
+                  </nav>
                   <Routes>
                     <Route path="/" element={<ChatPages />} />
                     <Route path="/login" element={<LoginPages />} />
                     <Route path="/signup" element={<RegisrtatPages />} />
                     <Route path="*" element={<ErrorPages />} />
                   </Routes>
-                </AuthProvider>
-              </Provider>
-            </ErrorBoundary>
-          </RollbalProvider>
-        </div>
-        <ToastContainer />
-      </div>
-    </div>
+                </div>
+                <ToastContainer />
+              </div>
+            </div>
+          </AuthProvider>
+        </Provider>
+      </ErrorBoundary>
+    </RollbalProvider>
+
   );
 };
 

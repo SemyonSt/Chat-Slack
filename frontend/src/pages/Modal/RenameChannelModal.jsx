@@ -18,7 +18,7 @@ const RenameChannelModal = (props) => {
   const { t } = useTranslation();
   const { onHide, modalInfo } = props;
   const channelId = modalInfo.item;
-  const channels = useSelector((state) => state.channelReduser.channels);
+  const channels = useSelector((state) => state.channelReducer.channels);
   const channelNames = channels.map((i) => i.name);
   const notify = () => toast.success(t('notify.rename'));
 

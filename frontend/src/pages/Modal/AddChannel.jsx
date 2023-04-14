@@ -18,7 +18,7 @@ const socket = io();
 const AddChannelModal = (props) => {
   const { onHide } = props;
   const { t } = useTranslation();
-  const channels = useSelector((state) => state.channelReduser.channels);
+  const channels = useSelector((state) => state.channelReducer.channels);
   const channelNames = channels.map((i) => i.name);
   const notify = () => toast.success(t('notify.create'));
 
