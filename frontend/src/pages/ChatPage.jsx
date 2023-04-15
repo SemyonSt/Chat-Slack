@@ -11,20 +11,28 @@ import Chennal from './Chat/Channel';
 
 import { actions as channelsActions } from '../slices/channelsSlice';
 import { actions as messageActions } from '../slices/messageSlice';
+import useAuth from '../hooks/authHooks';
 
 const ChatPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const auth = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(routes.getData(), { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo')).token}` } });
-      dispatch(channelsActions.setChannels(response.data.channels));
-      dispatch(messageActions.setMessages(response.data.messages));
-      // console.log(response.data);
+      await axios.get(routes.getData(), { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo')).token}` } })
+        .then((response) => {
+          dispatch(channelsActions.setChannels(response.data.channels));
+          dispatch(messageActions.setMessages(response.data.messages));
+          // console.log(response.data);
+        }).catch((err) => {
+          if (err.response.status === 401) {
+            auth.logOut();
+          }
+        });
     };
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, auth]);
 
   useEffect(() => {
     // console.log('STORAGE!!!!', localStorage);

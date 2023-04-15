@@ -3,18 +3,22 @@ import {
   Modal, Button, FormGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import { toast } from 'react-toastify';
 
-const socket = io();
+// const socket = io();
+import useSocket from '../../hooks/socketHook';
 
 const DeleteChannelModal = (props) => {
   const { onHide, modalInfo } = props;
   const channelId = modalInfo.item;
   const { t } = useTranslation();
   const notify = () => toast.success(t('notify.delete'));
+  const socket = useSocket();
+
   const submit = () => {
-    socket.emit('removeChannel', { id: channelId });
+    // socket.emit('removeChannel', { id: channelId });
+    socket.removeChannel(channelId);
     // setActive(false);
     onHide();
     notify();

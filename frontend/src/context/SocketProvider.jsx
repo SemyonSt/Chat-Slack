@@ -10,13 +10,13 @@ const SocketProvider = ({ socket, children }) => {
     socket.emit('newChannel', { name: values.channelName });
   }, [socket]);
 
-  const renameChannel = useCallback(() => {
+  const renameChannel = useCallback((channelId, values) => {
+    socket.emit('renameChannel', { id: channelId, name: values.channelName });
+  }, [socket]);
 
-  });
-
-  const removeChannel = useCallback(() => {
-
-  });
+  const removeChannel = useCallback((channelId) => {
+    socket.emit('removeChannel', { id: channelId });
+  }, [socket]);
 
   const contextValue = useMemo(() => ({
     addChannel,

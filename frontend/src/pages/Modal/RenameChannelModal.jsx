@@ -9,10 +9,11 @@ import {
   Modal, Button, Form, FormGroup,
 } from 'react-bootstrap';
 
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import { toast } from 'react-toastify';
+import useSocket from '../../hooks/socketHook';
 
-const socket = io();
+// const socket = io();
 
 const RenameChannelModal = (props) => {
   const { t } = useTranslation();
@@ -21,6 +22,8 @@ const RenameChannelModal = (props) => {
   const channels = useSelector((state) => state.channelReducer.channels);
   const channelNames = channels.map((i) => i.name);
   const notify = () => toast.success(t('notify.rename'));
+
+  const socket = useSocket();
 
   const schema = yup.object().shape({
     channelName: yup.string()
@@ -42,7 +45,8 @@ const RenameChannelModal = (props) => {
     validateOnChange: false,
     errorToken: false,
     onSubmit: () => {
-      socket.emit('renameChannel', { id: channelId, name: values.channelName });
+      // socket.emit('renameChannel', { id: channelId, name: values.channelName });
+      socket.renameChannel(channelId, values);
       onHide();
       notify();
     },

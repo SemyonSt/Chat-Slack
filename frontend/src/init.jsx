@@ -2,6 +2,7 @@ import { io } from 'socket.io-client';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider as RollbalProvider } from '@rollbar/react';
+import filterWords from 'leo-profanity';
 
 import App from './App';
 
@@ -10,6 +11,9 @@ import slice from './slices/index';
 import SocketProvider from './context/SocketProvider';
 
 const Init = () => {
+  filterWords.add(filterWords.getDictionary('ru'));
+  filterWords.add(filterWords.getDictionary('en'));
+
   const rollbarConfig = {
     accessToken: 'e4529ece2f6d496e8e58ff3c0243ff6b',
     environment: 'testenv',
@@ -32,7 +36,7 @@ const Init = () => {
     <React.StrictMode>
       <BrowserRouter>
         <RollbalProvider config={rollbarConfig}>
-          <SocketProvider store={socket}>
+          <SocketProvider socket={socket}>
             <App />
           </SocketProvider>
         </RollbalProvider>
