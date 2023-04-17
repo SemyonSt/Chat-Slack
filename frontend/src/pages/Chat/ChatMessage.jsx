@@ -46,10 +46,10 @@ const ChatMessage = () => {
   };
 
   // фильтрация сообщений по каналам
-  const chennaMessage = messages.filter((mes) => mes.channelId === channelsId);
+  const chennalMessage = messages.filter((mes) => mes.channelId === channelsId);
 
   // отображение сообщений в общем поле
-  const outputMessage = chennaMessage.map((mes) => {
+  const outputMessage = chennalMessage.map((mes) => {
     const { body, username, id } = mes;
     return (
       <div className="text-break mb-2" key={id}>
@@ -62,21 +62,6 @@ const ChatMessage = () => {
       </div>
     );
   });
-
-  // окончание "сообщения(ий/ие)"
-  const numberOfMessages = (numberArg) => {
-    const number = numberArg % 100;
-    if (number >= 5 && number <= 20) {
-      return t('messagesCounter.messagesCount_zero');
-    }
-    if (number === 1) {
-      return t('messagesCounter.messagesCount_one');
-    }
-    if (number >= 2 && number <= 4) {
-      return t('messagesCounter.messagesCount_other');
-    }
-    return t('messagesCounter.messagesCount_many');
-  };
 
   // перемотка скрола на новое сообщение
   const messagesBoxRef = useRef(null);
@@ -101,10 +86,8 @@ const ChatMessage = () => {
           <span
             className="text-muted"
           >
-            {chennaMessage.length}
             {' '}
-            <div>{numberOfMessages((chennaMessage.length))}</div>
-            <div>{`${chennaMessage.length} ${t('messagesCounter.messagesCount', { count: (chennaMessage.length) })}`}</div>
+            {`${chennalMessage.length} ${t('messagesCounter.messagesCount', { count: (chennalMessage.length) })}`}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5 " ref={messagesBoxRef}>

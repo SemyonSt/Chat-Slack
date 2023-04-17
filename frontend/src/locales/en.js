@@ -44,7 +44,6 @@ export default {
       messagesCount_zero: ' messages',
       messagesCount_one: ' message',
       messagesCount_other: ' messages',
-      messagesCount_many: ' messages',
     },
     notify: {
       delete: 'Channel deleted',

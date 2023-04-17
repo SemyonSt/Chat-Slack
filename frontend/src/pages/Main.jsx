@@ -30,6 +30,14 @@ const changeLanguage = (lng) => {
   i18next.changeLanguage(lng);
 };
 
+const PrivateRoute = ({ children }) => {
+  const auth = useAuth();
+
+  return (
+    auth.logIn ? children : auth.logOut
+  );
+};
+
 const Main = () => {
   const { t } = useTranslation();
   // const navigate = useNavigate();
@@ -62,10 +70,17 @@ const Main = () => {
 
           </nav>
           <Routes>
-            <Route path="/" element={<ChatPages />} />
             <Route path="/login" element={<LoginPages />} />
             <Route path="/signup" element={<RegisrtatPages />} />
             <Route path="*" element={<ErrorPages />} />
+            <Route
+              path="/"
+              element={(
+                <PrivateRoute>
+                  <ChatPages />
+                </PrivateRoute>
+              )}
+            />
           </Routes>
         </div>
         <ToastContainer />
