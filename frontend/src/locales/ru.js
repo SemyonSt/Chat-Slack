@@ -39,6 +39,7 @@ export default {
       alreadyExists: 'Такой пользователь уже существует',
       invalidNameOrPass: 'Неверные имя пользователя или пароль',
       networkError: 'Ошибка сети',
+      serverError: 'ошибка сервера',
     },
     messagesCounter: {
       messagesCount_zero: ' сообщений',

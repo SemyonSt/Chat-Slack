@@ -10,14 +10,18 @@ import { actions as channelsActions } from './slices/channelsSlice';
 import slice from './slices/index';
 import SocketProvider from './context/SocketProvider';
 
+const rollbarConfig = {
+  accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
+  payload: {
+    environment: 'production',
+  },
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+};
+
 const Init = () => {
   filterWords.add(filterWords.getDictionary('en'));
   filterWords.add(filterWords.getDictionary('ru'));
-
-  const rollbarConfig = {
-    accessToken: 'e4529ece2f6d496e8e58ff3c0243ff6b',
-    environment: 'testenv',
-  };
 
   const socket = io();
   socket.on('newChannel', (payload) => {

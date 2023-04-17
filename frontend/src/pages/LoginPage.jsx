@@ -20,10 +20,11 @@ import routes from '../routes';
 import useAuth from '../hooks/authHooks';
 
 const Logopages = () => {
-  // const navigate = useNavigate();
-  const auth = useAuth();
-  const notify = () => toast.error('Ошибка сети');
   const { t } = useTranslation();
+  const auth = useAuth();
+  const notifyNetworkError = () => toast.error(t('error.networkError'));
+  const notifyServerError = () => toast.error(t('error.serverError'));
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   // console.log(isLoading);
@@ -53,8 +54,6 @@ const Logopages = () => {
     }
   };
 
-  // const useAuth = () => useContext(authContext);
-
   const {
     values, errors, setSubmitting, handleChange, handleSubmit,
   } = useFormik({
@@ -73,21 +72,22 @@ const Logopages = () => {
           console.log('TRUUUEEEE', auth.token);
         })
         .catch((err) => {
+          console.log(err);
           if (err.message === 'Network Error') {
-            return notify();
+            return notifyNetworkError();
           }
           if (err.response.status === 401) {
-            // usernameRef.current.focus();
             console.log('ERROOR');
-            // errors.username = t('error.invalidNameOrPass');
             setError(t('error.invalidNameOrPass'));
             return setSubmitting(false);
+          }
+          if (err.response.status === 500) {
+            notifyServerError();
           }
           return setSubmitting(false);
         })
         .finally(() => {
           console.log('OOOOY');
-          // console.log('YES');
           setIsLoading(false); // сброс isLoading в false после завершения запроса
           setSubmitting(true);
         });

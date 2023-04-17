@@ -26,7 +26,8 @@ const ChatPage = () => {
           dispatch(messageActions.setMessages(response.data.messages));
           // console.log(response.data);
         }).catch((err) => {
-          if (err.response.status === 401) {
+          console.log('FFFFFFFFFFFFFFFFFFFF', err);
+          if (err.response.status === 500) {
             auth.logOut();
           }
         });

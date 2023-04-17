@@ -13,7 +13,8 @@ import useAuth from '../hooks/authHooks';
 const Registratepages = () => {
   const { t } = useTranslation();
   // const navigate = useNavigate();
-  const notify = () => toast.error(t('error.networkError'));
+  const notifyNetworkError = () => toast.error(t('error.networkError'));
+  const notifyServerError = () => toast.error(t('error.serverError'));
   const [isLoading, setIsLoading] = useState(false);
 
   const schema = yup.object().shape({
@@ -67,11 +68,14 @@ const Registratepages = () => {
         })
         .catch((err) => {
           if (err.message === 'Network Error') {
-            return notify();
+            return notifyNetworkError();
           }
           if (err.response.status === 409) {
             errors.username = t('error.alreadyExists');
             return setSubmitting(false);
+          }
+          if (err.response.status === 500) {
+            notifyServerError();
           }
           return setSubmitting(false);
         })
