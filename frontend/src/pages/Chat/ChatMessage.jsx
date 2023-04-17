@@ -103,7 +103,8 @@ const ChatMessage = () => {
           >
             {chennaMessage.length}
             {' '}
-            {numberOfMessages((chennaMessage.length))}
+            <div>{numberOfMessages((chennaMessage.length))}</div>
+            <div>{`${chennaMessage.length} ${t('messagesCounter.messagesCount', { count: (chennaMessage.length) })}`}</div>
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5 " ref={messagesBoxRef}>
