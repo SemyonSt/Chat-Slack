@@ -18,11 +18,10 @@ const rollbarConfig = {
   captureUncaught: true,
   captureUnhandledRejections: true,
 };
+filterWords.add(filterWords.getDictionary('en'));
+filterWords.add(filterWords.getDictionary('ru'));
 
 const Init = () => {
-  filterWords.add(filterWords.getDictionary('en'));
-  filterWords.add(filterWords.getDictionary('ru'));
-
   const socket = io();
   socket.on('newChannel', (payload) => {
     slice.dispatch(channelsActions.addChannel(payload));

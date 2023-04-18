@@ -17,6 +17,9 @@ socket.on('newMessage', (payload) => {
 const ChatMessage = () => {
   const { t } = useTranslation();
 
+  filterWords.add(filterWords.getDictionary('en'));
+  filterWords.add(filterWords.getDictionary('ru'));
+
   const [message, setMessage] = useState('');
   const channels = useSelector((state) => state.channelReducer.channels);
   const channelsId = useSelector((state) => state.channelReducer.channelId);
