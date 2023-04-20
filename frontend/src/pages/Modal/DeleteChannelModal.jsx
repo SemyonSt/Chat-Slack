@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Modal, Button, FormGroup,
 } from 'react-bootstrap';
@@ -33,6 +33,13 @@ const DeleteChannelModal = (props) => {
       });
   };
 
+  const inputRef = useRef();
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef.current.focus();
+    }, 1);
+  }, []);
+
   return (
     <Modal show centered>
       <Modal.Header closeButton onHide={onHide}>
@@ -43,7 +50,7 @@ const DeleteChannelModal = (props) => {
       </Modal.Body>
       <FormGroup className="d-flex justify-content-end m-3">
         <Button className="me-2 btn-secondary" variant="secondary" onClick={() => onHide()}>{t('interface.cancel')}</Button>
-        <Button className="btn-primary" variant="danger" type="submit" disabled={isLoading} onClick={() => submit()}>{t('interface.delete')}</Button>
+        <Button className="btn-primary" variant="danger" ref={inputRef} type="submit" disabled={isLoading} onClick={() => submit()}>{t('interface.delete')}</Button>
       </FormGroup>
     </Modal>
   );

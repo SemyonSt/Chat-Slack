@@ -13,7 +13,7 @@ import {
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import useAuth from '../../hooks/authHooks';
+// import useAuth from '../../hooks/authHooks';
 import useApi from '../../hooks/apiHook';
 
 // const socket = io();
@@ -27,7 +27,7 @@ const AddChannelModal = (props) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const auth = useAuth();
+  // const auth = useAuth();
   const apiChat = useApi();
 
   const schema = yup.object().shape({
@@ -52,7 +52,7 @@ const AddChannelModal = (props) => {
       setIsLoading(true);
       apiChat.addChannel(values)
         .then(() => {
-          auth.iAddedChannel();
+          // auth.iAddedChannel();
           values.channelName = '';
           notify();
           onHide();

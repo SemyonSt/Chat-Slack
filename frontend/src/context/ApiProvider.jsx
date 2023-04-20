@@ -9,6 +9,7 @@ const ApiProvider = ({ socket, children }) => {
     socket.emit('newChannel', { name: values.channelName }, (response) => {
       if (response.status === 'ok') {
         resolve(response.data);
+        localStorage.setItem('userDo', 'Im');
       } else {
         reject(response.error);
       }
