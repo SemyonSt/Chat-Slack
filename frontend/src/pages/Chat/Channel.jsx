@@ -10,19 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { actions as channelsActions } from '../../slices/channelsSlice';
 
 import Modal from '../Modal';
-// import slice from '../../slices/index';
-
-// import getModal from '../Modal/index';
-
-// const renderModal = ({ modalInfo, hideModal }) => {
-//   if (!modalInfo.type) {
-//     return null;
-//   }
-//   // console.log(modalInfo);
-
-//   const Component = getModal(modalInfo.type);
-//   return <Component modalInfo={modalInfo} onHide={hideModal} />;
-// };
 
 const Chennal = () => {
   filterWords.loadDictionary('ru');

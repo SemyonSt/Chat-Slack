@@ -69,15 +69,12 @@ const Logopages = () => {
       axios.post(routes.login(), { username: values.username, password: values.password })
         .then((response) => {
           auth.logIn(response);
-          console.log('TRUUUEEEE', auth.token);
         })
         .catch((err) => {
-          console.log(err);
           if (err.message === 'Network Error') {
             return notifyNetworkError();
           }
           if (err.response.status === 401) {
-            console.log('ERROOR');
             setError(t('error.invalidNameOrPass'));
             return setSubmitting(false);
           }
@@ -87,7 +84,6 @@ const Logopages = () => {
           return setSubmitting(false);
         })
         .finally(() => {
-          console.log('OOOOY');
           setIsLoading(false); // сброс isLoading в false после завершения запроса
           setSubmitting(true);
         });

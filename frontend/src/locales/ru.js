@@ -30,6 +30,11 @@ export default {
       password: 'Пароль',
       confirmPassword: 'Подтвердите пароль',
     },
+    errorPage: {
+      h1Text: 'Страница не найдена',
+      redirectMessage: 'Но вы можете перейти ',
+      redirectLink: 'на главную страницу',
+    },
     error: {
       minMaxSymbols: 'От 3 до 20 символов',
       required: 'Обязательное поле',

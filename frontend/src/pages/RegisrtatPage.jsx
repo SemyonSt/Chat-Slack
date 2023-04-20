@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 import Registration from '../images/registrate.jpg';
 import useAuth from '../hooks/authHooks';
+import routes from '../routes';
 
 const Registratepages = () => {
   const { t } = useTranslation();
@@ -61,10 +62,9 @@ const Registratepages = () => {
     validationSchema: schema,
     // eslint-disable-next-line no-shadow
     onSubmit: (values) => {
-      axios.post('/api/v1/signup', { username: values.username, password: values.password })
+      axios.post(routes.creatNewUser(), { username: values.username, password: values.password })
         .then((response) => {
           auth.logIn(response);
-          console.log('TRUUUEEEE', auth);
         })
         .catch((err) => {
           if (err.message === 'Network Error') {
@@ -80,7 +80,6 @@ const Registratepages = () => {
           return setSubmitting(false);
         })
         .finally(() => {
-          console.log('YES');
           setIsLoading(false); // сброс isLoading в false после завершения запроса
         });
     },

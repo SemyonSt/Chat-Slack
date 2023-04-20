@@ -1,21 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { io } from 'socket.io-client';
 import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import filterWords from 'leo-profanity';
-import { actions as messageActions } from '../../slices/messageSlice';
-
-import slice from '../../slices/index';
-
-const socket = io();
-socket.on('newMessage', (payload) => {
-  slice.dispatch(messageActions.addMessage(payload));
-});
+import useApi from '../../hooks/apiHook';
 
 const ChatMessage = () => {
   const { t } = useTranslation();
+
+  const apiChat = useApi();
 
   filterWords.add(filterWords.getDictionary('en'));
   filterWords.add(filterWords.getDictionary('ru'));
@@ -34,12 +28,13 @@ const ChatMessage = () => {
   // отправка сообщений на сервер
   const sendMessage = (e) => {
     e.preventDefault();
-    socket.emit('newMessage', {
-      body: message,
-      channelId: channelsId,
-      username: JSON.parse(localStorage.getItem('userInfo')).username,
-    });
-    setMessage('');
+    apiChat.newMessage(message, channelsId)
+      .then(() => {
+        setMessage('');
+      })
+      .catch((error) => {
+        console.log('ERRROROROOR!!!!!!!!!!!', error);
+      });
   };
 
   // какая то фигня (отображение ID активного канала)

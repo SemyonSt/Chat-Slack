@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   Modal, Button, Form, FormGroup,
 } from 'react-bootstrap';
@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import useAuth from '../../hooks/authHooks';
-import useSocket from '../../hooks/socketHook';
+import useApi from '../../hooks/apiHook';
 
 // const socket = io();
 
@@ -25,8 +25,10 @@ const AddChannelModal = (props) => {
   const channelNames = channels.map((i) => i.name);
   const notify = () => toast.success(t('notify.create'));
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const auth = useAuth();
-  const socket = useSocket();
+  const apiChat = useApi();
 
   const schema = yup.object().shape({
     channelName: yup.string()
@@ -47,17 +49,20 @@ const AddChannelModal = (props) => {
     validateOnChange: false,
     errorToken: false,
     onSubmit: () => {
-      try {
-        // socket.emit('newChannel', { name: values.channelName });
-        socket.addChannel(values);
-        auth.iAddedChannel();
-        // setActive(!active);
-        values.channelName = '';
-        notify();
-        onHide();
-      } catch (error) {
-        console.log('ERRROROROOR!!!!!!!!!!!', error);
-      }
+      setIsLoading(true);
+      apiChat.addChannel(values)
+        .then(() => {
+          auth.iAddedChannel();
+          values.channelName = '';
+          notify();
+          onHide();
+        })
+        .catch((error) => {
+          console.log('ERRROROROOR!!!!!!!!!!!', error);
+        })
+        .finally(() => {
+          setIsLoading(false); // сброс isLoading в false после завершения запроса
+        });
     },
   });
 
@@ -95,7 +100,7 @@ const AddChannelModal = (props) => {
         </Form.Group>
         <FormGroup className="d-flex justify-content-end m-3">
           <Button className="me-2 btn-secondary" variant="secondary" onClick={() => onHide()}>{t('interface.cancel')}</Button>
-          <Button className="btn-primary" variant="primary" type="submit">{t('interface.submit')}</Button>
+          <Button className="btn-primary" variant="primary" disabled={isLoading} type="submit">{t('interface.submit')}</Button>
         </FormGroup>
       </form>
 

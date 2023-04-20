@@ -30,6 +30,11 @@ export default {
       password: 'Password',
       confirmPassword: 'Confirm the password',
     },
+    errorPage: {
+      h1Text: "404. Page's not found",
+      redirectMessage: 'But you can redirect to the ',
+      redirectLink: 'main page',
+    },
     error: {
       minMaxSymbols: '3 to 20 characters',
       required: 'Obligatory field',

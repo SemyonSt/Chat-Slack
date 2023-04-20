@@ -7,22 +7,25 @@ import filterWords from 'leo-profanity';
 import App from './App';
 
 import { actions as channelsActions } from './slices/channelsSlice';
+import { actions as messageActions } from './slices/messageSlice';
 import slice from './slices/index';
-import SocketProvider from './context/SocketProvider';
-
-const rollbarConfig = {
-  accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
-  payload: {
-    environment: 'production',
-  },
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-};
-filterWords.add(filterWords.getDictionary('en'));
-filterWords.add(filterWords.getDictionary('ru'));
+import SocketProvider from './context/ApiProvider';
 
 const Init = () => {
+  const rollbarConfig = {
+    accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
+    payload: {
+      environment: 'production',
+    },
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  };
+
+  filterWords.add(filterWords.getDictionary('en'));
+  filterWords.add(filterWords.getDictionary('ru'));
+
   const socket = io();
+
   socket.on('newChannel', (payload) => {
     slice.dispatch(channelsActions.addChannel(payload));
   });
@@ -33,6 +36,10 @@ const Init = () => {
 
   socket.on('renameChannel', (payload) => {
     slice.dispatch(channelsActions.renameChannel(payload));
+  });
+
+  socket.on('newMessage', (payload) => {
+    slice.dispatch(messageActions.addMessage(payload));
   });
 
   return (
