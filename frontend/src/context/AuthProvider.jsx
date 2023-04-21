@@ -24,17 +24,12 @@ const AuthProvider = ({ children }) => {
     navigate(routes.logOut);
   }, [navigate]);
 
-  const iAddedChannel = useCallback(() => {
-    localStorage.setItem('userDo', 'Im');
-  }, []);
-
   const contextValue = useMemo(() => ({
     token,
     setToken,
     logOut,
     logIn,
-    iAddedChannel,
-  }), [token, setToken, logOut, logIn, iAddedChannel]);
+  }), [token, setToken, logOut, logIn]);
   return (
     <AuthContext.Provider value={contextValue}>
       {children}

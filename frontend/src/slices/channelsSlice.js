@@ -14,15 +14,12 @@ const channelsSlice = createSlice({
   reducers: {
     setChannels(state, { payload }) {
       state.channels = payload;
-      // return { ...state, channels: payload };
     },
     setChannelId(state, { payload }) {
       state.channelId = payload;
     },
     addChannel(state, { payload }) {
       state.channels.push(payload);
-      state.channelId = localStorage.getItem('userDo') ? payload.id : state.channelId;
-      localStorage.removeItem('userDo');
     },
     removeChannel(state, { payload }) {
       const update = state.channels.filter((channel) => channel.id !== payload.id);
@@ -38,6 +35,9 @@ const channelsSlice = createSlice({
         return i;
       });
       state.channels = update;
+    },
+    moveToChannel(state, { payload }) {
+      state.channelId = payload;
     },
   },
 });

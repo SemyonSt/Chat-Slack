@@ -1,22 +1,19 @@
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import cn from 'classnames';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import React, { useRef, useEffect, useState } from 'react';
 import {
   Modal, Button, Form, FormGroup,
 } from 'react-bootstrap';
-// import { io } from 'socket.io-client';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// import useAuth from '../../hooks/authHooks';
 import useApi from '../../hooks/apiHook';
-
-// const socket = io();
+import { actions as channelsActions } from '../../slices/channelsSlice';
 
 const AddChannelModal = (props) => {
   const { onHide } = props;
@@ -29,6 +26,7 @@ const AddChannelModal = (props) => {
 
   // const auth = useAuth();
   const apiChat = useApi();
+  const dispatch = useDispatch();
 
   const schema = yup.object().shape({
     channelName: yup.string()
@@ -51,8 +49,10 @@ const AddChannelModal = (props) => {
     onSubmit: () => {
       setIsLoading(true);
       apiChat.addChannel(values)
-        .then(() => {
+        .then((response) => {
           // auth.iAddedChannel();
+          console.log(response.id);
+          dispatch(channelsActions.moveToChannel(response.id));
           values.channelName = '';
           notify();
           onHide();
