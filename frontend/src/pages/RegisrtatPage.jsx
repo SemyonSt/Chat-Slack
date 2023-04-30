@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import axios from 'axios';
@@ -13,10 +13,6 @@ import routes from '../routes';
 
 const Registratepages = () => {
   const { t } = useTranslation();
-  // const navigate = useNavigate();
-  const notifyNetworkError = () => toast.error(t('error.networkError'));
-  const notifyServerError = () => toast.error(t('error.serverError'));
-  const [isLoading, setIsLoading] = useState(false);
 
   const schema = yup.object().shape({
     username: yup.string()
@@ -52,7 +48,7 @@ const Registratepages = () => {
   const auth = useAuth();
 
   const {
-    values, errors, touched, handleBlur, setSubmitting, handleChange, handleSubmit,
+    values, errors, touched, handleBlur, setSubmitting, isSubmitting, handleChange, handleSubmit,
   } = useFormik({
     initialValues: {
       username: '',
@@ -62,25 +58,26 @@ const Registratepages = () => {
     validationSchema: schema,
     // eslint-disable-next-line no-shadow
     onSubmit: (values) => {
+      setSubmitting(true);
       axios.post(routes.creatNewUser(), { username: values.username, password: values.password })
         .then((response) => {
           auth.logIn(response);
         })
         .catch((err) => {
           if (err.message === 'Network Error') {
-            return notifyNetworkError();
+            return toast.error(t('error.networkError'));
           }
           if (err.response.status === 409) {
             errors.username = t('error.alreadyExists');
             return setSubmitting(false);
           }
           if (err.response.status === 500) {
-            notifyServerError();
+            toast.error(t('error.serverError'));
           }
           return setSubmitting(false);
         })
         .finally(() => {
-          setIsLoading(false); // сброс isLoading в false после завершения запроса
+          setSubmitting(false); // сброс isLoading в false после завершения запроса
         });
     },
   });
@@ -151,7 +148,7 @@ const Registratepages = () => {
                 </div>
                 <div className="form-floating mb-4">
                   <input
-                    disabled={isLoading}
+                    disabled={isSubmitting}
                     ref={confirmPasswordRef}
                     onKeyDown={(event) => handleKeyDown(event, btnRef)}
                     placeholder={t('error.passwordMismatch')}
@@ -174,7 +171,7 @@ const Registratepages = () => {
                   </label>
                 </div>
                 <button
-                  disabled={isLoading}
+                  disabled={isSubmitting}
                   ref={btnRef}
                   type="submit"
                   className="w-100 mb-3 btn btn-outline-primary btn-light"

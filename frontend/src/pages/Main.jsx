@@ -8,23 +8,16 @@ import Button from 'react-bootstrap/Button';
 import { ToastContainer } from 'react-toastify';
 
 import i18next from 'i18next';
-import { initReactI18next, useTranslation } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import { useTranslation } from 'react-i18next';
 
-import resources from '../locales/index';
+import Modal from './Modal';
 import ChatPages from './ChatPage';
 import RegisrtatPages from './RegisrtatPage';
 import LoginPages from './LoginPage';
 import ErrorPages from './ErrorPage';
 import useAuth from '../hooks/authHooks';
 
-i18next
-  .use(initReactI18next)
-  .use(LanguageDetector)
-  .init({
-    fallbackLng: 'ru',
-    resources,
-  });
+import routes from '../routes';
 
 const changeLanguage = (lng) => {
   i18next.changeLanguage(lng);
@@ -70,11 +63,11 @@ const Main = () => {
 
           </nav>
           <Routes>
-            <Route path="/login" element={<LoginPages />} />
-            <Route path="/signup" element={<RegisrtatPages />} />
-            <Route path="*" element={<ErrorPages />} />
+            <Route path={routes.logIn} element={<LoginPages />} />
+            <Route path={routes.signup} element={<RegisrtatPages />} />
+            <Route path={routes.err} element={<ErrorPages />} />
             <Route
-              path="/"
+              path={routes.main}
               element={(
                 <PrivateRoute>
                   <ChatPages />
@@ -82,6 +75,7 @@ const Main = () => {
               )}
             />
           </Routes>
+          <Modal />
         </div>
         <ToastContainer />
       </div>

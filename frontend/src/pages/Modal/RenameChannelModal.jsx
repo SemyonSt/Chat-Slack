@@ -1,30 +1,28 @@
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import cn from 'classnames';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   Modal, Button, Form, FormGroup,
 } from 'react-bootstrap';
 
-// import { io } from 'socket.io-client';
 import { toast } from 'react-toastify';
 import useApi from '../../hooks/apiHook';
+import { actions as maodalsActions } from '../../slices/modalsSlice';
 
-// const socket = io();
-
-const RenameChannelModal = (props) => {
+const RenameChannelModal = () => {
+  const apiChat = useApi();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { onHide, modalInfo } = props;
+  const onHide = () => dispatch(maodalsActions.hideModal());
+  const modalInfo = useSelector((state) => state.modalsReducer.setModalInfo);
   const channelId = modalInfo.item;
   const channels = useSelector((state) => state.channelReducer.channels);
   const channelNames = channels.map((i) => i.name);
   const notify = () => toast.success(t('notify.rename'));
-
-  const [isLoading, setIsLoading] = useState(false);
-  const apiChat = useApi();
 
   const schema = yup.object().shape({
     channelName: yup.string()
@@ -37,7 +35,7 @@ const RenameChannelModal = (props) => {
 
   const channelToRename = channels.find((i) => i.id === channelId);
   const {
-    values, errors, handleChange, handleSubmit,
+    values, errors, handleChange, handleSubmit, setSubmitting, isSubmitting,
   } = useFormik({
     initialValues: {
       channelName: channelToRename ? channelToRename.name : '',
@@ -46,7 +44,7 @@ const RenameChannelModal = (props) => {
     validateOnChange: false,
     errorToken: false,
     onSubmit: () => {
-      setIsLoading(true);
+      setSubmitting(true);
       apiChat.renameChannel(channelId, values)
         .then(() => {
           onHide();
@@ -55,7 +53,7 @@ const RenameChannelModal = (props) => {
         .catch((error) => {
           console.log('ERRROROROOR!!!!!!!!!!!', error);
         }).finally(() => {
-          setIsLoading(false); // сброс isLoading в false после завершения запроса
+          setSubmitting(false); // сброс isLoading в false после завершения запроса
         });
     },
   });
@@ -95,7 +93,7 @@ const RenameChannelModal = (props) => {
         </Form.Group>
         <FormGroup className="d-flex justify-content-end m-3">
           <Button className="me-2 btn-secondary" variant="secondary" onClick={() => onHide()}>{t('interface.cancel')}</Button>
-          <Button className="btn-primary" variant="primary" disabled={isLoading} type="submit">{t('interface.submit')}</Button>
+          <Button className="btn-primary" variant="primary" disabled={isSubmitting} type="submit">{t('interface.submit')}</Button>
         </FormGroup>
       </form>
     </Modal>

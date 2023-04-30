@@ -25,9 +25,7 @@ const Logopages = () => {
   const notifyNetworkError = () => toast.error(t('error.networkError'));
   const notifyServerError = () => toast.error(t('error.serverError'));
 
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  // console.log(isLoading);
 
   const schema = yup.object().shape({
     username: yup
@@ -55,7 +53,7 @@ const Logopages = () => {
   };
 
   const {
-    values, errors, setSubmitting, handleChange, handleSubmit,
+    values, errors, setSubmitting, isSubmitting, handleChange, handleSubmit,
   } = useFormik({
     initialValues: {
       username: '',
@@ -65,7 +63,7 @@ const Logopages = () => {
     validateOnChange: false,
     errorToken: false,
     onSubmit: () => {
-      setIsLoading(true);
+      setSubmitting(true);
       axios.post(routes.login(), { username: values.username, password: values.password })
         .then((response) => {
           auth.logIn(response);
@@ -84,7 +82,6 @@ const Logopages = () => {
           return setSubmitting(false);
         })
         .finally(() => {
-          setIsLoading(false); // сброс isLoading в false после завершения запроса
           setSubmitting(true);
         });
     },
@@ -152,7 +149,7 @@ const Logopages = () => {
                     </label>
                   </div>
                   <Button
-                    disabled={isLoading}
+                    disabled={isSubmitting}
                     ref={btnRef}
                     type="submit"
                     className="w-100 mb-3 btn btn-primary"

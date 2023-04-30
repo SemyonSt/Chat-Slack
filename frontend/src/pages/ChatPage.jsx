@@ -7,7 +7,7 @@ import axios from 'axios';
 import routes from '../routes';
 
 import ChatMessage from './Chat/ChatMessage';
-import Chennal from './Chat/Channel';
+import Channel from './Chat/Channel';
 
 import { actions as channelsActions } from '../slices/channelsSlice';
 import { actions as messageActions } from '../slices/messageSlice';
@@ -45,7 +45,7 @@ const ChatPage = () => {
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
-        {Chennal()}
+        {Channel()}
         {ChatMessage()}
       </div>
     </div>

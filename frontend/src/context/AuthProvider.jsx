@@ -21,7 +21,7 @@ const AuthProvider = ({ children }) => {
 
   const logOut = useCallback(() => {
     localStorage.removeItem('userInfo');
-    navigate(routes.logOut);
+    navigate(routes.logIn);
   }, [navigate]);
 
   const contextValue = useMemo(() => ({

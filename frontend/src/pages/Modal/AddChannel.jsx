@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   Modal, Button, Form, FormGroup,
 } from 'react-bootstrap';
@@ -14,19 +14,17 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import useApi from '../../hooks/apiHook';
 import { actions as channelsActions } from '../../slices/channelsSlice';
+import { actions as maodalsActions } from '../../slices/modalsSlice';
 
-const AddChannelModal = (props) => {
-  const { onHide } = props;
+const AddChannelModal = () => {
+  const apiChat = useApi();
+  const dispatch = useDispatch();
+
+  const onHide = () => dispatch(maodalsActions.hideModal());
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channelReducer.channels);
   const channelNames = channels.map((i) => i.name);
   const notify = () => toast.success(t('notify.create'));
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  // const auth = useAuth();
-  const apiChat = useApi();
-  const dispatch = useDispatch();
 
   const schema = yup.object().shape({
     channelName: yup.string()
@@ -38,7 +36,7 @@ const AddChannelModal = (props) => {
   });
 
   const {
-    values, errors, handleChange, handleSubmit,
+    values, errors, handleChange, handleSubmit, setSubmitting, isSubmitting,
   } = useFormik({
     initialValues: {
       channelName: '',
@@ -47,10 +45,9 @@ const AddChannelModal = (props) => {
     validateOnChange: false,
     errorToken: false,
     onSubmit: () => {
-      setIsLoading(true);
+      setSubmitting(true);
       apiChat.addChannel(values)
         .then((response) => {
-          // auth.iAddedChannel();
           console.log(response.id);
           dispatch(channelsActions.moveToChannel(response.id));
           values.channelName = '';
@@ -61,7 +58,7 @@ const AddChannelModal = (props) => {
           console.log('ERRROROROOR!!!!!!!!!!!', error);
         })
         .finally(() => {
-          setIsLoading(false); // сброс isLoading в false после завершения запроса
+          setSubmitting(false); // сброс isLoading в false после завершения запроса
         });
     },
   });
@@ -100,7 +97,7 @@ const AddChannelModal = (props) => {
         </Form.Group>
         <FormGroup className="d-flex justify-content-end m-3">
           <Button className="me-2 btn-secondary" variant="secondary" onClick={() => onHide()}>{t('interface.cancel')}</Button>
-          <Button className="btn-primary" variant="primary" disabled={isLoading} type="submit">{t('interface.submit')}</Button>
+          <Button className="btn-primary" variant="primary" disabled={isSubmitting} type="submit">{t('interface.submit')}</Button>
         </FormGroup>
       </form>
 
